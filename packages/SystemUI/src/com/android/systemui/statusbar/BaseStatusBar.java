@@ -119,11 +119,8 @@ import com.android.systemui.RecentsComponent;
 import com.android.systemui.SwipeHelper;
 import com.android.systemui.SystemUI;
 import com.android.systemui.assist.AssistManager;
-<<<<<<< HEAD
 import com.android.systemui.navigation.Navigator;
-=======
 import com.android.systemui.chaos.lab.gestureanywhere.GestureAnywhereView;
->>>>>>> bdad8f0... Gesture Anywhere [1/2]
 import com.android.systemui.recents.Recents;
 import com.android.systemui.cm.SpamMessageProvider;
 import com.android.systemui.slimrecent.RecentController;
@@ -274,12 +271,10 @@ public abstract class BaseStatusBar extends SystemUI implements
 
     protected int mZenMode;
 
-<<<<<<< HEAD
     protected AppCircleSidebar mAppCircleSidebar;
-=======
+
     @ChaosLab(name="GestureAnywhere", classification=Classification.NEW_FIELD)
     protected GestureAnywhereView mGestureAnywhereView;
->>>>>>> bdad8f0... Gesture Anywhere [1/2]
 
     // which notification is currently being longpress-examined by the user
     private NotificationGuts mNotificationGutsExposed;
@@ -1069,6 +1064,21 @@ public abstract class BaseStatusBar extends SystemUI implements
         startNotificationGutsIntent(intent, appUid);
     }
 
+    private void launchFloating(PendingIntent pIntent) {
+        Intent overlay = new Intent();
+        overlay.addFlags(Intent.FLAG_FLOATING_WINDOW | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        try {
+            ActivityManagerNative.getDefault().resumeAppSwitches();
+        } catch (RemoteException e) {
+        }
+        try {
+            pIntent.send(mContext, 0, overlay);
+        } catch (PendingIntent.CanceledException e) {
+            // the stack trace isn't very helpful here.  Just log the exception message.
+            Slog.w(TAG, "Sending contentIntent failed: " + e);
+        }
+    }
+
     // The (i) button in the guts that links to the system notification settings for that app
     private void startAppNotificationSettingsActivity(String packageName, final int appUid) {
         final Intent intent = new Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS);
@@ -1111,6 +1121,7 @@ public abstract class BaseStatusBar extends SystemUI implements
                 sbn.getUser().getIdentifier());
         row.setTag(sbn.getPackageName());
         final View guts = row.getGuts();
+        final PendingIntent contentIntent = sbn.getNotification().contentIntent;
         final String pkg = sbn.getPackageName();
         String appname = pkg;
         Drawable pkgicon = null;
@@ -1131,6 +1142,7 @@ public abstract class BaseStatusBar extends SystemUI implements
         ((ImageView) row.findViewById(android.R.id.icon)).setImageDrawable(pkgicon);
         ((DateTimeView) row.findViewById(R.id.timestamp)).setTime(sbn.getPostTime());
         ((TextView) row.findViewById(R.id.pkgname)).setText(appname);
+        final View floatButton = guts.findViewById(R.id.notification_float_item);
         final View settingsButton = guts.findViewById(R.id.notification_inspect_item);
         final View appSettingsButton
                 = guts.findViewById(R.id.notification_inspect_app_provided_settings);
@@ -1161,6 +1173,11 @@ public abstract class BaseStatusBar extends SystemUI implements
                         }
                     });
                     removeNotification(sbn.getKey(), null);
+
+            floatButton.setVisibility(View.VISIBLE);
+            floatButton.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    launchFloating(contentIntent);
                 }
             });
 
@@ -1192,6 +1209,7 @@ public abstract class BaseStatusBar extends SystemUI implements
             }
         } else {
             settingsButton.setVisibility(View.GONE);
+            floatButton.setVisibility(View.GONE);
             appSettingsButton.setVisibility(View.GONE);
             filterButton.setVisibility(View.GONE);
         }

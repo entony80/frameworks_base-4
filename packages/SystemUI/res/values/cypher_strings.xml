@@ -179,6 +179,9 @@
 
     <!-- Heads up snooze toast -->
     <string name="heads_up_snooze_message">Heads up is snoozing for <xliff:g id="number">%d</xliff:g> minutes.</string>
+	
+	<!-- Title shown in recents popup for showing app in floating mode -->
+    <string name="recent_float_mode_title">Floating mode</string>
 
 </resources>
 
