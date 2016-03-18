@@ -137,11 +137,10 @@
 
             <com.android.systemui.BatteryLevelTextView android:id="@+id/battery_level_text"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="@dimen/header_battery_margin_keyguard"
-                android:textColor="@color/status_bar_battery_level_text_color"
-                android:textSize="@dimen/battery_level_text_size" />
+                android:layout_height="match_parent"
+                android:gravity="center_vertical|start"
+                android:textAppearance="@style/TextAppearance.StatusBar.Clock"
+                android:layout_marginStart="@dimen/header_battery_margin_keyguard" />
 
             <com.android.systemui.BatteryLevelTextView android:id="@+id/dock_battery_level_text"
                 android:layout_width="wrap_content"
@@ -158,7 +157,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:singleLine="true"
-                android:paddingStart="3dp"
+                android:paddingStart="@dimen/header_battery_margin_keyguard"
                 android:gravity="center_vertical|start"
                 />
 				
