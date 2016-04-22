@@ -1114,6 +1114,10 @@ public abstract class BaseStatusBar extends SystemUI implements
         }, false /* afterKeyguardGone */);
     }
 
+    private boolean isKeyguardShowing() {
+        return mStatusBarKeyguardViewManager.isShowing();
+    }
+
     private void bindGuts(ExpandableNotificationRow row) {
         row.inflateGuts();
         final StatusBarNotification sbn = row.getStatusBarNotification();
@@ -1174,7 +1178,12 @@ public abstract class BaseStatusBar extends SystemUI implements
                     });
                     removeNotification(sbn.getKey(), null);
 
-            floatButton.setVisibility(View.VISIBLE);
+            if (isKeyguardShowing()) {
+                floatButton.setVisibility(View.GONE);
+            } else {
+                floatButton.setVisibility(View.VISIBLE);
+            }
+
             floatButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                                 if (contentIntent == null) {
