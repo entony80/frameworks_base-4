@@ -302,7 +302,7 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
             attrs.setTitle("GlobalActions");
 
             boolean isPrimary = UserHandle.getCallingUserId() == UserHandle.USER_OWNER;
-            int powermenuAnimations = isPrimary ? getPowermenuAnimations() : 0;
+            int powermenuAnimations = isPrimary ? getPowermenuAnimations() : 2;
 
             if (powermenuAnimations == 0) {
              // default AOSP action
@@ -365,7 +365,7 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
 
     private int getPowermenuAnimations() {
         return Settings.System.getInt(mContext.getContentResolver(),
-                Settings.System.POWER_MENU_ANIMATIONS, 0);
+                Settings.System.POWER_MENU_ANIMATIONS, 2);
     }
 
     private float setPowerMenuAlpha() {
