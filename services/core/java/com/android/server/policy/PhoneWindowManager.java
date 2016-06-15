@@ -156,7 +156,6 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Random;
 import java.lang.reflect.Constructor;
 
 import static android.view.WindowManager.LayoutParams.*;
@@ -7522,15 +7521,7 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                     } else {
                         theme = 0;
                     }
-
-                    // Define Array List For AicpDexOpt Drawable
-                    int AicpDexOptIndex = 0 +  (int)(Math.random()*(4));
-                    ArrayList<Integer> AicpDexOpt = new ArrayList<Integer>();
-                    AicpDexOpt.add(com.android.internal.R.drawable.aicpdexopt1);
-                    AicpDexOpt.add(com.android.internal.R.drawable.aicpdexopt2);
-                    AicpDexOpt.add(com.android.internal.R.drawable.aicpdexopt3);
-                    AicpDexOpt.add(com.android.internal.R.drawable.aicpdexopt4);
-
+					
                     mBootMsgDialog = new ProgressDialog(mContext, theme) {
                         // This dialog will consume all events coming in to
                         // it, to avoid it trying to do things too early in boot.
@@ -7560,7 +7551,6 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                         mBootMsgDialog.setTitle(R.string.android_start_title);
                     }
                     mBootMsgDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                    mBootMsgDialog.setIcon(AicpDexOpt.get(AicpDexOptIndex));
                     mBootMsgDialog.setIndeterminate(true);
                     mBootMsgDialog.getWindow().setType(
                             WindowManager.LayoutParams.TYPE_BOOT_PROGRESS);
@@ -7575,20 +7565,13 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                     mBootMsgDialog.show();
                 }
 
-                // Only display the current package name if the main message says "Optimizing app N of M".
-                // We don't want to do this when the message says "Starting apps" or "Finishing boot", etc.
                 if (always && (currentPackageName != null)) {
-
-                    // Calculate random text color
-                    Random rand = new Random();
-                    String randomColor = Integer.toHexString(rand.nextInt(0xFFFFFF) & 0xFCFCFC );
-                    mBootMsgDialog.setMessage(Html.fromHtml(msg +
-                                                            "<br><b><font color=\"#" + randomColor + "\">" +
-                                                            currentPackageName +
-                                                            "</font><br><br>Powered by AICP</b>"));
+					// Only display the current package name if the main message says "Optimizing app N of M".
+                    // We don't want to do this when the message says "Starting apps" or "Finishing boot", etc.
+                    mBootMsgDialog.setMessage(Html.fromHtml(msg + "<br><b>" + currentPackageName + "</b>"));
                 }
                 else {
-                    mBootMsgDialog.setMessage(Html.fromHtml(msg + "<br><br><b>Powered by AICP</b>"));
+                    mBootMsgDialog.setMessage(msg);
                 }
             }
         });
