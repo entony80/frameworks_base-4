@@ -18,12 +18,6 @@
   <!-- Power menu -->
   <java-symbol type="string" name="system_error_vendorprint" />
 
-  <!-- AICP Random Boot Logo -->
-  <java-symbol type="drawable" name="aicpdexopt1" />
-  <java-symbol type="drawable" name="aicpdexopt2" />
-  <java-symbol type="drawable" name="aicpdexopt3" />
-  <java-symbol type="drawable" name="aicpdexopt4" />
-
   <java-symbol type="bool" name="config_enableScreenrecordChord" />
 
   <java-symbol type="drawable" name="ic_audio_notification_new" />
