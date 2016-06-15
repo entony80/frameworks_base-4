@@ -95,5 +95,7 @@
     <dimen name="folder_width">290dp</dimen>
     <dimen name="folder_height">480dp</dimen>
     <dimen name="setup_sidebar_width">90dp</dimen>
+	
+	<dimen name="recents_empty_drawable_padding">25dp</dimen>
 
 </resources>
