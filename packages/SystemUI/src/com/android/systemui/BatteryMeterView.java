@@ -466,7 +466,7 @@ public class BatteryMeterView extends View implements DemoMode,
         void setDarkIntensity(int backgroundColor, int fillColor);
     }
 
-    protected class AllInOneBatteryMeterDrawable  implements BatteryMeterDrawable {
+    protected class AllInOneBatteryMeterDrawable implements BatteryMeterDrawable {
         private static final boolean SINGLE_DIGIT_PERCENT = false;
         private static final boolean SHOW_100_PERCENT = false;
 
@@ -546,28 +546,67 @@ public class BatteryMeterView extends View implements DemoMode,
             if (mAnimationsEnabled) {
                 // TODO: Allow custom animations to be used
             }
+
+            if (mChargingAnimationsEnabled && !mThemeApplied) {
+                if (tracker.level < 100 && tracker.plugged) {
+                    startChargingAnimation(0);
+                } else {
+                    cancelChargingAnimation();
+                }
+            }
         }
 
         @Override
         public void onBatteryLevelChanged(int level, boolean pluggedIn, boolean charging) {
-            if (charging && !isThemeApplied()) {
-                if (mAnimator != null) mAnimator.cancel();
+            if (pluggedIn && !mThemeApplied && !mChargingAnimationsEnabled
+                    && mLevel != level) {
+                startChargingAnimation(mLevel == 0 ? 3 : 1);
+                mLevel = level;
+            } else if (!pluggedIn) {
+                mLevel = 0;
+                cancelChargingAnimation();
+            }
+        }
 
-                final int defaultAlpha = mLevelDrawable.getAlpha();
-                mAnimator = ValueAnimator.ofInt(defaultAlpha, 0, defaultAlpha);
-                mAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                    @Override
-                    public void onAnimationUpdate(ValueAnimator animation) {
-                        mLevelDrawable.setAlpha((int) animation.getAnimatedValue());
-                        invalidate();
+        private void startChargingAnimation(final int repeat) {
+            if (mLevelAlpha == 0 || mAnimator != null) return;
+			
+            final int defaultAlpha = mLevelAlpha;
+            mAnimator = ValueAnimator.ofInt(defaultAlpha, 0, defaultAlpha);
+            mAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    mLevelDrawable.setAlpha((int) animation.getAnimatedValue());
+                    invalidate();
+                }
+            });
+            mAnimator.addListener(new AnimatorListenerAdapter() {
+                private boolean mCanceled;
+
+                @Override
+                public void onAnimationCancel(Animator animation) {
+                    mCanceled = true;
+                    mLevelDrawable.setAlpha(defaultAlpha);
+                    mAnimator = null;
+                    invalidate();
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    if (mCanceled) return;
+                    mLevelDrawable.setAlpha(defaultAlpha);
+                    mAnimator = null;
+                    if (repeat <= 0) {
+                        startChargingAnimation(0);
+                    } else if (repeat != 1) {
+                        startChargingAnimation(repeat - 1);
                     }
-                });
-                mAnimator.addListener(new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationCancel(Animator animation) {
-                        mLevelDrawable.setAlpha(defaultAlpha);
-                        mAnimator = null;
-                    }
+                }
+            });
+            mAnimator.setDuration(2000);
+            mAnimator.setStartDelay(500);
+            mAnimator.start();
+        }
 
                     @Override
                     public void onAnimationEnd(Animator animation) {
