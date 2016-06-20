@@ -30,6 +30,9 @@ public class DismissView extends ExpandableView {
 
     private Button mClearAllText;
     private boolean mIsVisible;
+    private boolean mAnimating;
+    private boolean mWillBeGone;
+
     private final Interpolator mAppearInterpolator = new PathInterpolator(0f, 0.2f, 1f, 1f);
     private final Interpolator mDisappearInterpolator = new PathInterpolator(0f, 0f, 0.8f, 1f);
 
@@ -63,6 +66,10 @@ public class DismissView extends ExpandableView {
         animateText(nowVisible, onFinishedRunnable);
     }
 
+    public boolean isVisible() {
+        return mIsVisible || mAnimating;
+    }
+
     /**
      * Animate the text to a new visibility.
      *
@@ -70,7 +77,7 @@ public class DismissView extends ExpandableView {
      * @param onFinishedRunnable A runnable which should be run when the animation is
      *        finished.
      */
-    public void animateText(boolean nowVisible, Runnable onFinishedRunnable) {
+    private void animateText(boolean nowVisible, final Runnable onFinishedRunnable) {
         if (nowVisible != mIsVisible) {
             // Animate text
             float endValue = nowVisible ? 1.0f : 0.0f;
@@ -80,12 +87,21 @@ public class DismissView extends ExpandableView {
             } else {
                 interpolator = mDisappearInterpolator;
             }
+            mAnimating = true;
             mClearAllText.animate()
                     .alpha(endValue)
                     .setInterpolator(interpolator)
-                    .withEndAction(onFinishedRunnable)
                     .setDuration(260)
-                    .withLayer();
+                    .withLayer()
+                    .withEndAction(new Runnable() {
+                        @Override
+                        public void run() {
+                            mAnimating = false;
+                            if (onFinishedRunnable != null) {
+                                onFinishedRunnable.run();
+                            }
+                        }
+                    });
             mIsVisible = nowVisible;
         } else {
             if (onFinishedRunnable != null) {
@@ -100,12 +116,15 @@ public class DismissView extends ExpandableView {
     }
 
     @Override
-    public void performRemoveAnimation(float translationDirection, Runnable onFinishedRunnable) {
+    public void performRemoveAnimation(long duration, float translationDirection,
+            Runnable onFinishedRunnable) {
+        // TODO: Use duration
         performVisibilityAnimation(false);
     }
 
     @Override
-    public void performAddAnimation(long delay) {
+    public void performAddAnimation(long delay, long duration) {
+        // TODO: use delay and duration
         performVisibilityAnimation(true);
     }
 
@@ -125,5 +144,16 @@ public class DismissView extends ExpandableView {
 
     public void cancelAnimation() {
         mClearAllText.animate().cancel();
+    }
+
+    public void setOnButtonClickListener(OnClickListener listener) {
+        mContent.setOnClickListener(listener);
+    }
+
+    public boolean isOnEmptySpace(float touchX, float touchY) {
+        return touchX < mContent.getX()
+                || touchX > mContent.getX() + mContent.getWidth()
+                || touchY < mContent.getY()
+                || touchY > mContent.getY() + mContent.getHeight();
     }
 }
