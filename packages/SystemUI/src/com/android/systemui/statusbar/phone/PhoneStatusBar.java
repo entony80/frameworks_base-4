@@ -1929,12 +1929,12 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
         // accelerating the swipes
         int rowDelayDecrement = 10;
         int currentDelay = 140;
-        int totalDelay = 180;
+        int totalDelay = 0;
         int numItems = hideAnimatedList.size();
-        for (int i = numItems - 1; i >= 0; i--) {
+        for (int i = 0; i < numItems; i++) {
             View view = hideAnimatedList.get(i);
             Runnable endRunnable = null;
-            if (i == 0) {
+            if (i == numItems - 1) {
                 endRunnable = animationFinishAction;
             }
             mStackScroller.dismissViewAnimated(view, endRunnable, totalDelay, 260);
