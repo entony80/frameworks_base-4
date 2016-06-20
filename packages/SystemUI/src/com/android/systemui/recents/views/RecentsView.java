@@ -406,8 +406,6 @@ public class RecentsView extends FrameLayout implements TaskStackView.TaskStackV
         mConfig.getAvailableTaskStackBounds(width, height, mConfig.systemInsets.top,
                 mConfig.systemInsets.right, searchBarSpaceBounds, taskStackBounds);
 
-        mFloatingButton = ((View)getParent()).findViewById(R.id.dismiss_text);
-
         if (mFloatingButton != null && showClearAllRecents) {
             int clearRecentsLocation = Settings.System.getIntForUser(
                 mContext.getContentResolver(), Settings.System.RECENTS_CLEAR_ALL_LOCATION,
@@ -450,8 +448,7 @@ public class RecentsView extends FrameLayout implements TaskStackView.TaskStackV
                     break;
             }
             mFloatingButton.setLayoutParams(params);
-        }
-        else if (mFloatingButton != null) {
+        } else {
             mFloatingButton.setVisibility(View.GONE);
         }
 
@@ -483,7 +480,7 @@ public class RecentsView extends FrameLayout implements TaskStackView.TaskStackV
 
     public void startFABanimation() {
         // Animate the action button in
-        mFloatingButton = ((View)getParent()).findViewById(R.id.dismiss_text);
+        mFloatingButton = ((View)getParent()).findViewById(R.id.floating_action_button);
         mFloatingButton.animate().alpha(1f)
                 .setStartDelay(mConfig.taskBarEnterAnimDelay)
                 .setDuration(mConfig.taskBarEnterAnimDuration)
@@ -494,7 +491,7 @@ public class RecentsView extends FrameLayout implements TaskStackView.TaskStackV
 
     public void endFABanimation() {
         // Animate the action button away
-        mFloatingButton = ((View)getParent()).findViewById(R.id.dismiss_text);
+        mFloatingButton = ((View)getParent()).findViewById(R.id.floating_action_button);
         mFloatingButton.animate().alpha(0f)
                 .setStartDelay(0)
                 .setDuration(mConfig.taskBarExitAnimDuration)
@@ -506,8 +503,8 @@ public class RecentsView extends FrameLayout implements TaskStackView.TaskStackV
     @Override
     protected void onAttachedToWindow () {
         super.onAttachedToWindow();
-        mFloatingButton = ((View)getParent()).findViewById(R.id.dismiss_text);
-        mClearRecents = ((View)getParent()).findViewById(R.id.dismiss_text);
+        mFloatingButton = ((View)getParent()).findViewById(R.id.floating_action_button);
+        mClearRecents = ((View)getParent()).findViewById(R.id.clear_recents);
         mClearRecents.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 dismissAllTasksAnimated();
