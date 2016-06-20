@@ -706,11 +706,31 @@ public abstract class PanelView extends FrameLayout {
             public void onAnimationEnd(Animator animation) {
                 if (expand) PanelView.this.removeOnLayoutChangeListener(mLayoutChangeListener);
                 if (clearAllExpandHack && !mCancelled) {
-                    setExpandedHeightInternal(getMaxPanelHeight());
-                }
-                mHeightAnimator = null;
-                if (!mCancelled) {
-                    notifyExpandingFinished();
+                    mHeightAnimator = createHeightAnimator(getMaxPanelHeight());
+                    mHeightAnimator.setInterpolator(mLinearOutSlowInInterpolator);
+                    mHeightAnimator.setDuration(350);
+                    mHeightAnimator.addListener(new AnimatorListenerAdapter() {
+                        private boolean mCancelled;
+
+                        @Override
+                        public void onAnimationCancel(Animator animation) {
+                            mCancelled = true;
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            mHeightAnimator = null;
+                            if (!mCancelled) {
+                                notifyExpandingFinished();
+                            }
+                        }
+                    });
+                    mHeightAnimator.start();
+                } else {
+                    mHeightAnimator = null;
+                    if (!mCancelled) {
+                        notifyExpandingFinished();
+                    }
                 }
                 notifyBarPanelExpansionChanged();
             }
