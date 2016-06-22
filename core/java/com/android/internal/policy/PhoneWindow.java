@@ -32,8 +32,6 @@ import android.os.UserHandle;
 
 import android.view.ActionMode;
 import android.view.ContextThemeWrapper;
-import android.view.GestureDetector;
-import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.Gravity;
 import android.view.IRotationWatcher.Stub;
 import android.view.IWindowManager;
