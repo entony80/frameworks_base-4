@@ -42,7 +42,7 @@
     <string name="message_switch_fail">Impossibile passare a questa operazione, perché non ha interfacce..</string>
     <string name="tasklist_killall">Chiudi tutto</string>
     <string name="tasklist_memory_usage">"Memoria libera/totale: <xliff:g id="number">%s</xliff:g> / <xliff:g id="name">%s</xliff:g>"</string>
-    <string name="message_keep_one_launcher">Bisognerebbe tenere almeno un'attività in memoria!</string>
+    <string name="message_keep_one_launcher">Bisognerebbe tenere almeno un\'attività in memoria!</string>
 
     <!-- On The Go -->
     <string name="onthego_notif_ticker">On-The-Go attivato</string>
