@@ -53,22 +53,6 @@ public class EditTile extends QSTile<QSTile.BooleanState> implements KeyguardMon
     }
 
     @Override
-    protected void handleUpdateState(BooleanState state, Object arg) {
-        final boolean showing = getHost().getKeyguardMonitor().isShowing();
-        final boolean secure = getHost().getKeyguardMonitor().isSecure();
-        state.visible = !showing || !secure;
-        state.enabled = !showing;
-        state.label = mContext.getString(R.string.quick_settings_edit_label);
-
-        if (arg instanceof Boolean) {
-            state.value = (boolean) arg;
-        } else {
-            state.value = getHost().isEditing();
-        }
-        state.icon = ResourceIcon.get(R.drawable.ic_qs_edit_tiles);
-    }
-
-    @Override
     public int getMetricsCategory() {
         return CMMetricsLogger.TILE_EDIT;
     }
