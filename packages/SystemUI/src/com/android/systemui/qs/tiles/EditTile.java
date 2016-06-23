@@ -52,6 +52,12 @@ public class EditTile extends QSTile<QSTile.BooleanState> implements KeyguardMon
         refreshState(true);
     }
 
+	@Override
+    protected void handleUpdateState(BooleanState state, Object arg) {
+        final boolean showing = getHost().getKeyguardMonitor().isShowing();
+        final boolean secure = getHost().getKeyguardMonitor().isSecure();
+	}
+		
     @Override
     public int getMetricsCategory() {
         return CMMetricsLogger.TILE_EDIT;
