@@ -125,7 +125,6 @@ import com.android.systemui.recents.Recents;
 import com.android.systemui.cm.SpamMessageProvider;
 import com.android.systemui.slimrecent.RecentController;
 import com.android.systemui.statusbar.NotificationData.Entry;
-import com.android.systemui.statusbar.AppSidebar;
 import com.android.systemui.statusbar.appcirclesidebar.AppCircleSidebar;
 import com.android.systemui.statusbar.phone.NavigationBarView;
 import com.android.systemui.statusbar.phone.NotificationGroupManager;
@@ -270,10 +269,6 @@ public abstract class BaseStatusBar extends SystemUI implements
     protected int mZenMode;
 
     protected AppCircleSidebar mAppCircleSidebar;
-
-    // App sidebar
-    protected AppSidebar mAppSidebar;
-	protected int mSidebarPosition;
 
     @ChaosLab(name="GestureAnywhere", classification=Classification.NEW_FIELD)
     protected GestureAnywhereView mGestureAnywhereView;
