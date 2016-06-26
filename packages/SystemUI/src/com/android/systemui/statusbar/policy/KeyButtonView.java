@@ -64,11 +64,6 @@ public class KeyButtonView extends ImageView {
     private AudioManager mAudioManager;
     private boolean mGestureAborted;
     private boolean mPerformedLongClick;
-
-    private boolean mShouldTintIcons = true;
-    private static int color;
-    private static boolean mTintEnabled;
-
     private PerformanceManager mPerf;
 
     private final Runnable mCheckLongPress = new Runnable() {
