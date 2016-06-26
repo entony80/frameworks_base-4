@@ -33,6 +33,7 @@ public class BatteryLevelTextView extends TextView implements
     private BatteryStateRegistar mBatteryStateRegistar;
     private boolean mBatteryPresent;
 
+	private BatteryController mBatteryController;
     private boolean mBatteryCharging;
     private boolean mForceShow;
     private boolean mAttached;
