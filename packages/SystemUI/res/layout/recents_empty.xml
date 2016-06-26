@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_centerInParent="true"
-        android:paddingBottom="@dimen/recents_empty_drawable_padding"
+        android:paddingBottom="25dp"
         android:src="@drawable/recents_empty" />
     <TextView android:layout_below="@id/EmptyRecentsImage" android:layout_centerInParent="true" android:textSize="16.0sp" android:textColor="#ffffffff" android:gravity="center" android:layout_gravity="center" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/no_previous_recents"
         xmlns:android="http://schemas.android.com/apk/res/android" />
