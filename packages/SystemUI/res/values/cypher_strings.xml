@@ -15,6 +15,11 @@
      limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    
+	<!-- Smart Dialog: Deny button [CHAR LIMIT=NONE] -->
+    <string name="smart_dialog_deny">NO</string>
+    <!-- Smart Dialog: Confirmation button [CHAR LIMIT=NONE] -->
+    <string name="smart_dialog_confirm">YES</string>
 
     <!-- The text for the button in the notification window-shade that clears
          all of the currently visible notifications. [CHAR LIMIT=10]-->

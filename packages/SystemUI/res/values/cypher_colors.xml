@@ -15,6 +15,18 @@
      limitations under the License.
 -->
 <resources>
+    
+	<!-- Smart Dialog snackbar background color. -->
+    <color name="smart_dialog_background">#FF263238</color>
+    <!-- Smart Dialog snackbar background shadow color. -->
+    <color name="smart_dialog_shadow">#33000000</color>
+    <!-- Smart Dialog snackbar description text color. -->
+    <color name="smart_dialog_text">#FFFFFFFF</color>
+    <!-- Smart Dialog OTS snackbar action denial button text color. -->
+    <color name="smart_dialog_deny_text">#FF7A8890</color>
+    <!-- Smart Dialog OTS snackbar action confirmation button text color. -->
+    <color name="smart_dialog_confirm_text">#FFFFFFFF</color>
+
     <!-- Floating action button -->
     <color name="fab_color">#263238</color>
     <color name="floating_action_button_icon_color">#ffffff</color>
