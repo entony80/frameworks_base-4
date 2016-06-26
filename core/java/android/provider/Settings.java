@@ -4492,26 +4492,6 @@ public final class Settings {
          */
         public static final String PA_PIE_ALWAYS_RIGHT = "pa_pie_always_right";
 
-	/** Wheither navigation bar is enabled or not
-	 * @hide
-	 */
-	public static final String NAVIGATION_BAR_SHOW = "navigation_bar_show";
-
-	/** Navbar height
-         * @hide
-         */
-	public static final String NAVIGATION_BAR_HEIGHT = "navigation_bar_height";
-
-	/** Navbar height in landscape
-         * @hide
-         */
-	public static final String NAVIGATION_BAR_HEIGHT_LANDSCAPE = "navigation_bar_height_landscape";
-
-	/** Navbar width
-         * @hide
-         */
-	public static final String NAVIGATION_BAR_WIDTH = "navigation_bar_width";
-
         /**
          * Defines the shortcuts to be shown on lockscreen
          * Usage is like this: target:icon|target:icon|target:icon
