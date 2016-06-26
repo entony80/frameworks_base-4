@@ -52,6 +52,13 @@ public class BatteryLevelTextView extends TextView implements
         updateVisibility();
     }
 
+	public void setBatteryController(BatteryController batteryController) {
+        mBatteryController = batteryController;
+        if (mAttached) {
+            mBatteryController.addStateChangedCallback(this);
+        }
+    }
+	
     public void setBatteryStateRegistar(BatteryStateRegistar batteryStateRegistar) {
         mRequestedVisibility = VISIBLE;
         mBatteryStateRegistar = batteryStateRegistar;
