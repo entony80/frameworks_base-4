@@ -150,7 +150,7 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
 
     // Power menu customizations
     String mActions;
-    private int mScreenshotDelay;
+    private int mScreenshotDelay;	
 
     private BitSet mAirplaneModeBits;
     private final List<PhoneStateListener> mPhoneStateListeners = new ArrayList<>();
@@ -289,7 +289,7 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
 
     private void handleShow() {
         awakenIfNecessary();
-        checkSettings();
+	checkSettings();
         prepareDialog();
 
         // If we only have 1 item and it's a simple press action, just do this action.
@@ -346,12 +346,7 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
             if (powermenuAnimations == 10) {
                 attrs.windowAnimations = R.style.PowerMenuTranslucentAnimation;
                 attrs.gravity = Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL;
-            }
-
-            if (Settings.System.getInt(mContext.getContentResolver(),
-                    Settings.System.TRANSPARENT_POWER_MENU, 100) != 100) {
-                attrs.alpha = setPowerMenuAlpha();
-            }
+            }          
 
             mDialog.getWindow().setAttributes(attrs);
             mDialog.show();
@@ -362,14 +357,6 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
     private int getPowermenuAnimations() {
         return Settings.System.getInt(mContext.getContentResolver(),
                 Settings.System.POWER_MENU_ANIMATIONS, 2);
-    }
-
-    private float setPowerMenuAlpha() {
-        int mPowerMenuAlpha = Settings.System.getInt(mContext.getContentResolver(),
-                Settings.System.TRANSPARENT_POWER_MENU, 100);
-        double dAlpha = mPowerMenuAlpha / 100.0;
-        float alpha = (float) dAlpha;
-        return alpha;
     }
 
     private Context getUiContext() {
