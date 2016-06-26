@@ -3744,6 +3744,12 @@ public final class Settings {
          */
         public static final String NETWORK_TRAFFIC_AUTOHIDE = "network_traffic_autohide";
 
+		/**
+         * Whether or not to hide the network traffic indicator when there is no activity
+         * @hide
+         */
+        public static final String NETWORK_TRAFFIC_COLOR = "network_traffic_color";
+		
         /**
          * Network traffic inactivity threshold (default is 10 kBs)
          * @hide
