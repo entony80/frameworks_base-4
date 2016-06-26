@@ -60,6 +60,8 @@ public class KeyguardStatusBarView extends RelativeLayout {
     private BatteryMeterView mBatteryMeter;
     private BatteryLevelTextView mBatteryLevel;
     private BatteryLevelTextView mDockBatteryLevel;
+	
+	private BatteryController mBatteryController;
 
     private TextView mCarrierLabel;
     private int mCarrierLabelSpot;
