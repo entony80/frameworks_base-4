@@ -30,6 +30,7 @@ import android.graphics.Color;
 import android.graphics.Outline;
 import android.graphics.Rect;
 import android.graphics.drawable.Animatable;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.RippleDrawable;
 import android.graphics.drawable.TransitionDrawable;
@@ -527,6 +528,7 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
             mDockBatteryLevel.setForceShown(mExpanded && mShowBatteryTextExpanded);
             mDockBatteryLevel.setVisibility(View.VISIBLE);
         }
+        applyHeaderBackgroundShadow();
     }
 
     private void updateSignalClusterDetachment() {
@@ -1318,6 +1320,21 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
             transitionDrawable.startTransition(1000);
         } else {
             mBackgroundImage.setImageDrawable(dw);
+        }
+        applyHeaderBackgroundShadow();
+    }
+
+    private void applyHeaderBackgroundShadow() {
+        if (customHeader == 1) {
+            ColorDrawable shadow = new ColorDrawable(Color.BLACK);
+            shadow.setAlpha(headerShadow);
+            mBackgroundImage.setForeground(shadow);
+            enableTextShadow();
+        } else if (customHeader == 0) {
+            ColorDrawable shadow = new ColorDrawable(Color.BLACK);
+            shadow.setAlpha(0);
+            mBackgroundImage.setForeground(shadow);
+	    disableTextShadow();
         }
     }
 
