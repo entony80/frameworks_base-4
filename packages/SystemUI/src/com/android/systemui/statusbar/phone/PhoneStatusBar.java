@@ -409,11 +409,6 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
     View mExpandedContents;
     TextView mNotificationPanelDebugText;
 
-    // Aicp logo
-    private boolean mAicpLogo;
-    private int mAicpLogoColor;
-    private ImageView aicpLogo;
-
     // settings
     private QSDragPanel mQSPanel;
     private QSTileHost mQSTileHost;
@@ -686,19 +681,6 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                         mBatterySaverWarningColor = mContext.getResources()
                                 .getColor(com.android.internal.R.color.battery_saver_mode_color);
                     }
-<<<<<<< HEAD
-            } else if (uri.equals(Settings.System.getUriFor(
-                    Settings.System.STATUS_BAR_AICP_LOGO_STYLE))) {
-                recreateStatusBar();
-                updateRowStates();
-                updateSpeedbump();
-                updateClearAll();
-                updateEmptyShadeView();
-            } else if (uri.equals(Settings.System.getUriFor(
-                    Settings.System.USE_SLIM_RECENTS))) {
-                updateRecents();
-=======
->>>>>>> parent of ee0376e... FWB: Aicp Logo style [2/2]
             }
 
             update();
@@ -724,12 +706,6 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
 
             // This method reads CMSettings.Secure.RECENTS_LONG_PRESS_ACTIVITY
             updateCustomRecentsLongPressHandler(false);
-
-            mAicpLogo = Settings.System.getIntForUser(resolver,
-                    Settings.System.STATUS_BAR_AICP_LOGO, 0, mCurrentUserId) == 1;
-            mAicpLogoColor = Settings.System.getIntForUser(resolver,
-                    Settings.System.STATUS_BAR_AICP_LOGO_COLOR, 0xFFFFFFFF, mCurrentUserId);
-            showAicpLogo(mAicpLogo, mAicpLogoColor);
 
             mWeatherTempStyle = Settings.System.getIntForUser(
                     resolver, Settings.System.STATUS_BAR_WEATHER_TEMP_STYLE, 0,
@@ -4108,15 +4084,6 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             }
         }
     };
-
-    public void showAicpLogo(boolean show, int color) {
-        if (mStatusBarView == null) return;
-        aicpLogo = (ImageView) mStatusBarView.findViewById(R.id.aicp_logo);
-        aicpLogo.setColorFilter(color, Mode.SRC_IN);
-        if (aicpLogo != null) {
-            aicpLogo.setVisibility(show ? (mAicpLogo ? View.VISIBLE : View.GONE) : View.GONE);
-        }
-    }
 
     private BroadcastReceiver mPackageBroadcastReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
