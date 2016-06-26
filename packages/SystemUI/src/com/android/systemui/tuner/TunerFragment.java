@@ -31,14 +31,12 @@ import android.preference.PreferenceGroup;
 import android.preference.SwitchPreference;
 import android.provider.Settings;
 import android.provider.Settings.System;
-import android.provider.Settings.Secure;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.android.internal.logging.MetricsLogger;
 import com.android.systemui.R;
-import com.android.systemui.settings.SettingConfirmationHelper;
 import com.android.systemui.statusbar.phone.StatusBarIconController;
 import com.android.systemui.tuner.TunerService.Tunable;
 
@@ -48,14 +46,11 @@ public class TunerFragment extends PreferenceFragment {
 
     private static final String KEY_STATUSBAR_BLACKLIST = "statusbar_icon_blacklist";
     private static final String KEY_DEMO_MODE = "demo_mode";
-	private static final String KEY_QUICK_PULL_DOWN = "quick_settings_quick_pull_down";
 
     public static final String SETTING_SEEN_TUNER_WARNING = "seen_tuner_warning";
 
     private static final int MENU_REMOVE = Menu.FIRST + 1;
 
-	private SwitchPreference mQuickPullDown;
-	
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -84,7 +79,6 @@ public class TunerFragment extends PreferenceFragment {
                 return true;
             }
         });
-		mQuickPullDown = (SwitchPreference) findPreference(KEY_QUICK_PULL_DOWN);
         if (Settings.Secure.getInt(getContext().getContentResolver(), SETTING_SEEN_TUNER_WARNING,
                 0) == 0) {
             new AlertDialog.Builder(getContext())
@@ -103,10 +97,6 @@ public class TunerFragment extends PreferenceFragment {
     @Override
     public void onResume() {
         super.onResume();
-		
-		updateQuickPullDown();
-        getContext().getContentResolver().registerContentObserver(
-                Secure.getUriFor(QUICK_SETTINGS_QUICK_PULL_DOWN), false, mSettingObserver);
 
         registerPrefs(getPreferenceScreen());
         MetricsLogger.visibility(getContext(), MetricsLogger.TUNER, true);
@@ -168,35 +158,4 @@ public class TunerFragment extends PreferenceFragment {
         }
         return super.onOptionsItemSelected(item);
     }
-	
-	private void updateQuickPullDown() {
-        mQuickPullDown.setOnPreferenceChangeListener(null);
-        mQuickPullDown.setChecked(SettingConfirmationHelper.get(
-                getContext().getContentResolver(),
-                QUICK_SETTINGS_QUICK_PULL_DOWN, false));
-        mQuickPullDown.setOnPreferenceChangeListener(mQuickPullDownChange);
-    }
-	
-	private final class SettingObserver extends ContentObserver {
-        public SettingObserver() {
-            super(new Handler());
-        }
-		
-	@Override
-    public void onChange(boolean selfChange, Uri uri, int userId) {
-        super.onChange(selfChange, uri, userId);
-        updateBatteryPct();
-        updateQuickPullDown();
-    }
-	
-	private final OnPreferenceChangeListener mQuickPullDownChange = new OnPreferenceChangeListener() {
-        @Override
-        public boolean onPreferenceChange(Preference preference, Object newValue) {
-            final boolean v = (Boolean) newValue;
-            SettingConfirmationHelper.set(
-                    getContext().getContentResolver(),
-                    QUICK_SETTINGS_QUICK_PULL_DOWN, v);
-            return true;
-        }
-    };
 }

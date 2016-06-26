@@ -75,7 +75,6 @@ import com.android.systemui.SwipeHelper;
 import com.android.systemui.qs.QSContainer;
 import com.android.systemui.qs.QSDetailClipper;
 import com.android.systemui.qs.QSDragPanel;
-import com.android.systemui.settings.SettingConfirmationHelper;
 import com.android.systemui.statusbar.ExpandableNotificationRow;
 import com.android.systemui.statusbar.ExpandableView;
 import com.android.systemui.statusbar.FlingAnimationUtils;
@@ -1128,29 +1127,9 @@ public class NotificationPanelView extends PanelView implements
             mTwoFingerQsExpandPossible = true;
             mStatusBar.resetQsPanelVisibility();
         }
-        boolean twoFingerQsEvent = mTwoFingerQsExpandPossible && isOpenQsEvent(event);
-        boolean oneFingerQsOverride = action == MotionEvent.ACTION_DOWN
-                && shouldQuickSettingsIntercept(event.getX(), event.getY(), -1, false);
-        if ((twoFingerQsEvent || oneFingerQsOverride)
-                && event.getY(event.getActionIndex()) < mStatusBarMinHeight) {
-            // This will run even when OTS is NOT_SET. See shouldQuickSettingsIntercept.
-            SettingConfirmationHelper.prompt(
-                    mStatusBar.getSnackbarView(),
-                    Settings.Secure.QUICK_SETTINGS_QUICK_PULL_DOWN,
-                    true,
-                    getContext().getString(R.string.quick_settings_quick_pull_down),
-                    new SettingConfirmationHelper.OnSettingChoiceListener() {
-                        @Override
-                        public void onSettingConfirm(final String settingName) {
-                        }
-
-                        @Override
-                        public void onSettingDeny(final String settingName) {
-                            closeQs();
-                        }
-                    },
-                    null);
-					
+        if (mTwoFingerQsExpandPossible && isOpenQsEvent(event)
+                && event.getY(event.getActionIndex()) < mStatusBarMinHeight
+                && mExpandedHeight <= mQsPeekHeight) {
             MetricsLogger.count(mContext, COUNTER_PANEL_OPEN_QS, 1);
             mQsExpandImmediate = true;
             requestPanelHeightUpdate();
@@ -1879,28 +1858,19 @@ public class NotificationPanelView extends PanelView implements
     /**
      * @return Whether we should intercept a gesture to open Quick Settings.
      */
-    private boolean shouldQuickSettingsIntercept(float x, float y, float yDiff boolean useHeader) {
-	if (!mQsExpansionEnabled || useHeader && mCollapsedOnDown)) {
+    private boolean shouldQuickSettingsIntercept(float x, float y, float yDiff) {
+        if (!mQsExpansionEnabled || mCollapsedOnDown) {
             return false;
         }
         View header = mKeyguardShowing ? mKeyguardStatusBar : mHeader;
         boolean onHeader = x >= header.getX() && x <= header.getX() + header.getWidth()
                 && y >= header.getTop() && y <= header.getBottom();
-				
-		final float w = getMeasuredWidth();
-        float region = (w * (1.f/4.f)); // TODO overlay region fraction?
-        final boolean showQsOverride = isLayoutRtl() ? (x < region) : (w - region < x);
 
         if (mQsExpanded) {
             return onHeader || mDetailScrollLock
                     || (mScrollView.isScrolledToBottom() && yDiff < 0) && isInQsArea(x, y);
         } else {
-            // The OTS setting will take effect if, and only if, the value of it is set to NEVER.
-            // Otherwise, even in the case of NOT_SET, we assume the user is okay with this.
-            final boolean userOkay = SettingConfirmationHelper.get(
-                    getContext().getContentResolver(),
-                    Settings.Secure.QUICK_SETTINGS_QUICK_PULL_DOWN, true);
-            return userOkay && (onHeader || showQsOverride);
+            return onHeader;
         }
     }
 

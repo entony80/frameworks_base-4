@@ -20,13 +20,6 @@
     <string name="smart_dialog_deny">NO</string>
     <!-- Smart Dialog: Confirmation button [CHAR LIMIT=NONE] -->
     <string name="smart_dialog_confirm">YES</string>
-	
-	<!-- Smart Dialog: Quick Settings quick pull-down feature description message. [CHAR LIMIT=NONE] -->
-    <string name="quick_settings_quick_pull_down">Can Quick Settings be opened by swiping from the right side?</string>
-  
-      <!-- Quick pull-down configuration -->
-      <string name="quick_settings_quick_pull_down_name">Quick pull-down</string>
-	  <string name="quick_settings_quick_pull_down_summary">Automatically expand Quick Settings when pulling from the side of the screen</string>
 
     <!-- The text for the button in the notification window-shade that clears
          all of the currently visible notifications. [CHAR LIMIT=10]-->
