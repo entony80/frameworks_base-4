@@ -4621,14 +4621,7 @@ public final class Settings {
         public static final String MUTE_ANNOYING_NOTIFICATIONS_THRESHOLD =
                 "mute_annoying_notifications_threshold";
 
-        /**
-         *
-         * Whether to show switches for wifi/cell/bt in the settings dashboard
-         * @hide
-         */
-        public static final String DASHBOARD_SWITCHES = "dashboard_switches";
-
-        /**
+	    /**
          * Statusbar AICP logo
          * @hide
          */
