@@ -292,13 +292,4 @@ interface IWindowManager
      * @return The frame statistics or null if the window does not exist.
      */
     WindowContentFrameStats getWindowContentFrameStats(IBinder token);
-
-    void setLiveLockscreenEdgeDetector(boolean enable);
-
-    /**
-     * Get current system ui visibility mode.
-     *
-     * @hide
-     */
-    int getSystemUIVisibility();
 }
