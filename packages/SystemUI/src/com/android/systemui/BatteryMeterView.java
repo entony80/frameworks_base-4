@@ -66,7 +66,6 @@ public class BatteryMeterView extends View implements DemoMode,
     public enum BatteryMeterMode {
         BATTERY_METER_GONE,
         BATTERY_METER_ICON_PORTRAIT,
-        BATTERY_METER_ICON_LANDSCAPE,
         BATTERY_METER_CIRCLE,
         BATTERY_METER_TEXT
     }
@@ -339,9 +338,6 @@ public class BatteryMeterView extends View implements DemoMode,
             case BatteryController.STYLE_GONE:
                 meterMode = BatteryMeterMode.BATTERY_METER_GONE;
                 showInsidePercent = false;
-                break;
-            case BatteryController.STYLE_ICON_LANDSCAPE:
-                meterMode = BatteryMeterMode.BATTERY_METER_ICON_LANDSCAPE;
                 break;
             case BatteryController.STYLE_TEXT:
                 meterMode = BatteryMeterMode.BATTERY_METER_TEXT;
@@ -846,8 +842,6 @@ public class BatteryMeterView extends View implements DemoMode,
 
         private int getBatteryDrawableResourceForMode(BatteryMeterMode mode) {
             switch (mode) {
-                case BATTERY_METER_ICON_LANDSCAPE:
-                    return R.drawable.ic_battery_landscape;
                 case BATTERY_METER_CIRCLE:
                     return R.drawable.ic_battery_circle;
                 case BATTERY_METER_ICON_PORTRAIT:
@@ -859,8 +853,6 @@ public class BatteryMeterView extends View implements DemoMode,
 
         private int getBatteryDrawableStyleResourceForMode(BatteryMeterMode mode) {
             switch (mode) {
-                case BATTERY_METER_ICON_LANDSCAPE:
-                    return R.style.BatteryMeterViewDrawable_Landscape;
                 case BATTERY_METER_CIRCLE:
                     return R.style.BatteryMeterViewDrawable_Circle;
                 case BATTERY_METER_ICON_PORTRAIT:
