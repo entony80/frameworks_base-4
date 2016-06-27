@@ -48,4 +48,16 @@
         android:textAppearance="@style/TextAppearance.QS.DetailButton"
         android:clickable="false"
         android:focusable="false" />
+		
+	<TextView
+        android:id="@+id/edit"
+        android:text="@string/quick_settings_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:minWidth="88dp"
+        android:paddingRight="12dp"
+        android:textAppearance="@style/TextAppearance.QS.DetailButton"
+        android:clickable="false"
+        android:focusable="false" />
 </com.android.keyguard.AlphaOptimizedLinearLayout>
