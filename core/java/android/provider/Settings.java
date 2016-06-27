@@ -4360,6 +4360,12 @@ public final class Settings {
          */
         public static final String PA_PIE_SCREENSHOT = "pa_pie_screenshot";
 
+		/**
+		 * Commit
+		 * @hide
+		 */
+		public static final String FLAG_WINDOW_IS_PARTIALLY_OBSCURED ="flag_window_is_partially_obscured";
+		
 	    /**
          * Change quick settings tiles animation style
          *
