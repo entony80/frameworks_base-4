@@ -281,4 +281,8 @@
     <!-- Path data for circle battery -->
     <string name="battery_circle_full" translatable="false">M 12 2 C 17.5228474983 2 22 6.47715250169 22 12 C 22 17.5228474983 17.5228474983 22 12 22 C 6.47715250169 22 2 17.5228474983 2 12 C 2 6.47715250169 6.47715250169 2 12 2 Z</string>
     <string name="battery_circle_empty" translatable="false">M 12 12 C 12 12 12 12 12 12 C 12 12 12 12 12 12 C 12 12 12 12 12 12 C 12 12 12 12 12 12 Z</string>
+	
+	<string name="expand_hint">Swipe down to expand</string>
+    <string name="swipe_left_hint">Swipe left to <xliff:g id="app_name">%1$s</xliff:g></string>
+    <string name="swipe_right_hint">Swipe right to notifications</string>
 </resources>
