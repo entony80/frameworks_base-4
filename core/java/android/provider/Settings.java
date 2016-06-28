@@ -4163,13 +4163,6 @@ public final class Settings {
         public static final String QS_NUM_TILE_COLUMNS = "sysui_qs_num_tile_columns";
 
         /**
-         * Whether to display set of animations when prompting the power menu
-         *
-         * @hide
-         */
-        public static final String POWER_MENU_ANIMATIONS = "power_menu_animations";
-
-        /**
          * Whether to display powermenu on secure lockscreen
          *
          * @hide
