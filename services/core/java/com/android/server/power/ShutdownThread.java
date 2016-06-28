@@ -61,7 +61,6 @@ import com.android.internal.telephony.ITelephony;
 import com.android.server.pm.PackageManagerService;
 import com.android.server.power.PowerManagerService;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.IWindowManager;
 import android.view.WindowManager;
 import java.lang.reflect.Method;
@@ -79,7 +78,6 @@ import java.io.PrintWriter;
 import java.io.OutputStreamWriter;
 
 import com.android.internal.util.aicp.Helpers;
-import com.android.internal.R;
 
 import org.cyanogenmod.internal.util.ThemeUtils;
 
@@ -285,54 +283,6 @@ public final class ShutdownThread extends Thread {
 
             closer.dialog = sConfirmDialog;
             sConfirmDialog.setOnDismissListener(closer);
-            WindowManager.LayoutParams attrs = sConfirmDialog.getWindow().getAttributes();
-
-            boolean isPrimary = UserHandle.getCallingUserId() == UserHandle.USER_OWNER;
-            int powermenuAnimations = isPrimary ? getPowermenuAnimations(context) : 0;
-
-            if (powermenuAnimations == 0) {
-            // default AOSP action
-            }
-            if (powermenuAnimations == 1) {
-                attrs.windowAnimations = R.style.PowerMenuBottomAnimation;
-                attrs.gravity = Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL;
-            }
-            if (powermenuAnimations == 2) {
-                attrs.windowAnimations = R.style.PowerMenuTopAnimation;
-                attrs.gravity = Gravity.TOP|Gravity.CENTER_HORIZONTAL;
-            }
-            if (powermenuAnimations == 3) {
-                attrs.windowAnimations = R.style.PowerMenuRotateAnimation;
-                attrs.gravity = Gravity.CENTER_VERTICAL|Gravity.CENTER_HORIZONTAL;
-            }
-            if (powermenuAnimations == 4) {
-                attrs.windowAnimations = R.style.PowerMenuXylonAnimation;
-                attrs.gravity = Gravity.CENTER_VERTICAL|Gravity.CENTER_HORIZONTAL;
-            }
-            if (powermenuAnimations == 5) {
-                attrs.windowAnimations = R.style.PowerMenuTranslucentAnimation;
-                attrs.gravity = Gravity.CENTER_VERTICAL|Gravity.CENTER_HORIZONTAL;
-            }
-            if (powermenuAnimations == 6) {
-                attrs.windowAnimations = R.style.PowerMenuTnAnimation;
-                attrs.gravity = Gravity.CENTER_VERTICAL|Gravity.CENTER_HORIZONTAL;
-            }
-            if (powermenuAnimations == 7) {
-                attrs.windowAnimations = R.style.PowerMenuflyAnimation;
-                attrs.gravity = Gravity.CENTER_VERTICAL|Gravity.CENTER_HORIZONTAL;
-            }
-            if (powermenuAnimations == 8) {
-                attrs.windowAnimations = R.style.PowerMenuCardAnimation;
-                attrs.gravity = Gravity.CENTER_VERTICAL|Gravity.CENTER_HORIZONTAL;
-            }
-            if (powermenuAnimations == 9) {
-                attrs.windowAnimations = R.style.PowerMenuTranslucentAnimation;
-                attrs.gravity = Gravity.TOP|Gravity.CENTER_HORIZONTAL;
-            }
-            if (powermenuAnimations == 10) {
-                attrs.windowAnimations = R.style.PowerMenuTranslucentAnimation;
-                attrs.gravity = Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL;
-            }
 
             if (Settings.System.getInt(context.getContentResolver(),
                     Settings.System.TRANSPARENT_POWER_MENU, 100) != 100) {
@@ -348,11 +298,6 @@ public final class ShutdownThread extends Thread {
         } else {
             beginShutdownSequence(context);
         }
-    }
-
-    private static int getPowermenuAnimations(Context context) {
-        return Settings.System.getInt(context.getContentResolver(),
-                Settings.System.POWER_MENU_ANIMATIONS, 0);
     }
 
     private static float setRebootDialogAlpha(Context context) {
@@ -542,55 +487,6 @@ public final class ShutdownThread extends Thread {
             // shutting down.
             pd.setCancelable(false);
             pd.getWindow().setType(WindowManager.LayoutParams.TYPE_KEYGUARD_DIALOG);
-
-            WindowManager.LayoutParams attrs = pd.getWindow().getAttributes();
-
-            boolean isPrimary = UserHandle.getCallingUserId() == UserHandle.USER_OWNER;
-            int powermenuAnimations = isPrimary ? getPowermenuAnimations(context) : 0;
-
-            if (powermenuAnimations == 0) {
-            // default AOSP action
-            }
-            if (powermenuAnimations == 1) {
-                attrs.windowAnimations = R.style.PowerMenuBottomAnimation;
-                attrs.gravity = Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL;
-            }
-            if (powermenuAnimations == 2) {
-                attrs.windowAnimations = R.style.PowerMenuTopAnimation;
-                attrs.gravity = Gravity.TOP|Gravity.CENTER_HORIZONTAL;
-            }
-            if (powermenuAnimations == 3) {
-                attrs.windowAnimations = R.style.PowerMenuRotateAnimation;
-                attrs.gravity = Gravity.CENTER_VERTICAL|Gravity.CENTER_HORIZONTAL;
-            }
-            if (powermenuAnimations == 4) {
-                attrs.windowAnimations = R.style.PowerMenuXylonAnimation;
-                attrs.gravity = Gravity.CENTER_VERTICAL|Gravity.CENTER_HORIZONTAL;
-            }
-            if (powermenuAnimations == 5) {
-                attrs.windowAnimations = R.style.PowerMenuTranslucentAnimation;
-                attrs.gravity = Gravity.CENTER_VERTICAL|Gravity.CENTER_HORIZONTAL;
-            }
-            if (powermenuAnimations == 6) {
-                attrs.windowAnimations = R.style.PowerMenuTnAnimation;
-                attrs.gravity = Gravity.CENTER_VERTICAL|Gravity.CENTER_HORIZONTAL;
-            }
-            if (powermenuAnimations == 7) {
-                attrs.windowAnimations = R.style.PowerMenuflyAnimation;
-                attrs.gravity = Gravity.CENTER_VERTICAL|Gravity.CENTER_HORIZONTAL;
-            }
-            if (powermenuAnimations == 8) {
-                attrs.windowAnimations = R.style.PowerMenuCardAnimation;
-                attrs.gravity = Gravity.CENTER_VERTICAL|Gravity.CENTER_HORIZONTAL;
-            }
-            if (powermenuAnimations == 9) {
-                attrs.windowAnimations = R.style.PowerMenuTranslucentAnimation;
-                attrs.gravity = Gravity.TOP|Gravity.CENTER_HORIZONTAL;
-            }
-            if (powermenuAnimations == 10) {
-                attrs.windowAnimations = R.style.PowerMenuTranslucentAnimation;
-                attrs.gravity = Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL;
-            }
 
             attrs.alpha = setRebootDialogAlpha(context);
 
