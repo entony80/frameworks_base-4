@@ -60,7 +60,6 @@ public class QSPanel extends ViewGroup {
     protected ViewGroup mDetailContent;
     protected TextView mDetailSettingsButton;
     protected TextView mDetailDoneButton;
-	protected TextView mDetailEditButton;
     protected View mBrightnessView;
     protected QSDetailClipper mClipper;
     private final H mHandler = new H();
@@ -104,7 +103,6 @@ public class QSPanel extends ViewGroup {
         mDetailContent = (ViewGroup) mDetail.findViewById(android.R.id.content);
         mDetailSettingsButton = (TextView) mDetail.findViewById(android.R.id.button2);
         mDetailDoneButton = (TextView) mDetail.findViewById(android.R.id.button1);
-		mDetailEditButton = (TextView) mDetail.findViewById(android.R.id.button0);
         updateDetailText();
         mBrightnessView = LayoutInflater.from(mContext).inflate(
                 R.layout.quick_settings_brightness_dialog, this, false);
@@ -131,15 +129,6 @@ public class QSPanel extends ViewGroup {
                 announceForAccessibility(
                         mContext.getString(R.string.accessibility_desc_quick_settings));
                 closeDetail();
-            }
-        });
-		
-		mDetailEditButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                announceForAccessibility(
-                        mContext.getString(R.string.accessibility_desc_quick_settings));
-                showDetail();
             }
         });
     }
@@ -175,7 +164,6 @@ public class QSPanel extends ViewGroup {
 
     protected void updateDetailText() {
         mDetailDoneButton.setText(R.string.quick_settings_done);
-		mDetailEditButton.setText(R.string.quick_settings_edit);
         mDetailSettingsButton.setText(R.string.quick_settings_more_settings);
     }
 
@@ -227,7 +215,6 @@ public class QSPanel extends ViewGroup {
     protected void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         FontSizeUtils.updateFontSize(mDetailDoneButton, R.dimen.qs_detail_button_text_size);
-		FontSizeUtils.updateFontSize(mDetailEditButton, R.dimen.qs_detail_button_text_size);
         FontSizeUtils.updateFontSize(mDetailSettingsButton, R.dimen.qs_detail_button_text_size);
 
         // We need to poke the detail views as well as they might not be attached to the view
