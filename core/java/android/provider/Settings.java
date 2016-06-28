@@ -4456,13 +4456,6 @@ public final class Settings {
                 "wallpaper_intra_close",
                 "task_open_behind",
         };
-        public static final String ANIMATION_CONTROLS_DURATION = "animation_controls_duration";
-
-        public static final String ANIMATION_CONTROLS_NO_OVERRIDE = "animation_controls_no_override";
-
-        public static final String ANIMATION_CONTROLS_EXIT_ONLY = "animation_controls_exit_only";
-
-        public static final String ANIMATION_CONTROLS_REVERSE_EXIT = "animation_controls_reverse_exit";
 
         /**
          * Toast animations
@@ -4876,6 +4869,21 @@ public final class Settings {
          * @hide
          */
         public static final String DASHBOARD_TILEVIEW_DOUBLE_LINES = "dashboard_tileview_double_lines";
+
+        public static final String[] ACTIVITY_ANIMATION_CONTROLS = new String[] {
+                "activity_open",
+                "activity_close",
+                "task_open",
+                "task_close",
+                "task_to_front",
+                "task_to_back",
+                "wallpaper_open",
+                "wallpaper_close",
+                "wallpaper_intra_open",
+                "wallpaper_intra_close",
+                "task_open_behind",
+        };  
+        public static final String ANIMATION_CONTROLS_DURATION = "animation_controls_duration";
 
         /**
          * Change the number of columns displayed in the Settings dashboard
