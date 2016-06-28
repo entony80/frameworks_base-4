@@ -52,8 +52,6 @@ import android.view.ViewGroup;
 import android.view.ViewRootImpl;
 import android.view.WindowManager;
 import android.view.GestureDetector;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.Animation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -85,15 +83,6 @@ public class NavigationBarView extends BaseNavigationBar {
     private Drawable mRecentIcon;
     private Drawable mRecentLandIcon;
     private Drawable mHomeIcon, mHomeLandIcon;
-
-    private boolean mDimNavButtons;
-    private int mDimNavButtonsTimeout;
-    private float mDimNavButtonsAlpha = 0.5f;
-    private float mOriginalAlpha = 1.0f;
-    private boolean mIsDim = false;
-    private boolean mIsAnimating = false;
-    private boolean mDimNavButtonsAnimate;
-    private int mDimNavButtonsAnimateDuration;
 
     private NavigationBarViewTaskSwitchHelper mTaskSwitchHelper;
     private DeadZone mDeadZone;
@@ -176,9 +165,26 @@ public class NavigationBarView extends BaseNavigationBar {
         }
     };
 
-    public void onNavButtonTouched() {
-        if (mIsHandlerCallbackActive) {
-            mIsHandlerCallbackActive = false;
+    private class H extends Handler {
+        public void handleMessage(Message m) {
+            switch (m.what) {
+                case MSG_CHECK_INVALID_LAYOUT:
+                    final String how = "" + m.obj;
+                    final int w = getWidth();
+                    final int h = getHeight();
+                    final int vw = mCurrentView.getWidth();
+                    final int vh = mCurrentView.getHeight();
+
+                    if (h != vh || w != vw) {
+                        Log.w(TAG, String.format(
+                            "*** Invalid layout in navigation bar (%s this=%dx%d cur=%dx%d)",
+                            how, w, h, vw, vh));
+                        if (WORKAROUND_INVALID_LAYOUT) {
+                            requestLayout();
+                        }
+                    }
+                    break;
+            }
         }
 
         final ViewGroup navButtons = getNavButtons();
@@ -376,10 +382,6 @@ public class NavigationBarView extends BaseNavigationBar {
         setDisabledFlags(disabledFlags, false);
     }
 
-    public ViewGroup getNavButtons() {
-        return (ViewGroup) mCurrentView.findViewById(R.id.nav_buttons);
-    }
-
     public void setDisabledFlags(int disabledFlags, boolean force) {
         super.setDisabledFlags(disabledFlags, force); 
 
@@ -389,6 +391,10 @@ public class NavigationBarView extends BaseNavigationBar {
                 && ((mNavigationIconHints & StatusBarManager.NAVIGATION_HINT_BACK_ALT) == 0);
         final boolean disableSearch = ((disabledFlags & View.STATUS_BAR_DISABLE_SEARCH) != 0);
 
+        if (SLIPPERY_WHEN_DISABLED) {
+            setSlippery(disableHome && disableRecent && disableBack && disableSearch);
+        }
+		
         ViewGroup navButtons = (ViewGroup) mCurrentView.findViewById(R.id.nav_buttons);
         if (navButtons != null) {
             LayoutTransition lt = navButtons.getLayoutTransition();
@@ -612,8 +618,6 @@ public class NavigationBarView extends BaseNavigationBar {
 
         @Override
         protected void update() {
-            ContentResolver resolver = mContext.getContentResolver();
-
             mShowDpadArrowKeys = CMSettings.System.getIntForUser(getContext().getContentResolver(),
                     CMSettings.System.NAVIGATION_BAR_MENU_ARROW_KEYS, 0, UserHandle.USER_CURRENT) != 0;
             // reset saved side button visibilities
@@ -623,8 +627,6 @@ public class NavigationBarView extends BaseNavigationBar {
                 }
             }
             setNavigationIconHints(mNavigationIconHints, true);
-
-            onNavButtonTouched();
             mDoubleTapToSleep = Settings.System.getIntForUser(mContext.getContentResolver(),
                     Settings.System.DOUBLE_TAP_SLEEP_NAVBAR, 0, UserHandle.USER_CURRENT) != 0;
         }
