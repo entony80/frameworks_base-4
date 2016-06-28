@@ -286,7 +286,6 @@ public final class ShutdownThread extends Thread {
 
             if (Settings.System.getInt(context.getContentResolver(),
                     Settings.System.TRANSPARENT_POWER_MENU, 100) != 100) {
-                attrs.alpha = setRebootDialogAlpha(context);
             }
 
             sConfirmDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_KEYGUARD_DIALOG);
@@ -487,9 +486,6 @@ public final class ShutdownThread extends Thread {
             // shutting down.
             pd.setCancelable(false);
             pd.getWindow().setType(WindowManager.LayoutParams.TYPE_KEYGUARD_DIALOG);
-
-            attrs.alpha = setRebootDialogAlpha(context);
-
             pd.getWindow().setDimAmount(setRebootDialogDim(context));
             pd.show();
         }
