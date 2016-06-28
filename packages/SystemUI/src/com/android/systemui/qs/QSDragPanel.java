@@ -160,10 +160,11 @@ public class QSDragPanel extends QSPanel implements View.OnDragListener, View.On
         mDetailRemoveButton = (TextView) mDetail.findViewById(android.R.id.button3);
         mDetailSettingsButton = (TextView) mDetail.findViewById(android.R.id.button2);
         mDetailDoneButton = (TextView) mDetail.findViewById(android.R.id.button1);
-		mDetailEditButton = (TextView) mDetail.findViewById(android.R.id.button0);
         updateDetailText();
         mDetail.setVisibility(GONE);
         mDetail.setClickable(true);
+		mDetailEditButton = (TextView) mDetail.findViewById(android.R.id.button0);
+		mDetail.setVisibility(VISIBLE);
 
         mQsPanelTop = (QSPanelTopView) LayoutInflater.from(mContext).inflate(R.layout.qs_tile_top,
                 this, false);
