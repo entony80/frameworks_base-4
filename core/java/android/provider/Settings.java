@@ -4458,13 +4458,6 @@ public final class Settings {
         };
 
         /**
-         * Toast animations
-         *
-         * @hide
-         */
-        public static final String TOAST_ANIMATION = "toast_animation";
-
-        /**
          * @hide
          */
         public static final String PA_PIE_CHEVRON = "pa_pie_chevron";
@@ -4870,6 +4863,10 @@ public final class Settings {
          */
         public static final String DASHBOARD_TILEVIEW_DOUBLE_LINES = "dashboard_tileview_double_lines";
 
+        /**  
+         * AOKP Custom System Animations
+         * @hide
+         */  
         public static final String[] ACTIVITY_ANIMATION_CONTROLS = new String[] {
                 "activity_open",
                 "activity_close",
