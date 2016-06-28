@@ -65,7 +65,7 @@
                 android:focusable="true"/>
 				
 		<TextView
-                android:id="@+id/button0"
+                android:id="@android:+id/button0"
                 style="@style/QSBorderlessButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
