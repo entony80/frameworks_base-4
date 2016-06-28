@@ -107,8 +107,6 @@
   <java-symbol type="style" name="PowerMenuflyAnimation" />
   <java-symbol type="style" name="PowerMenuCardAnimation" />
 
-  <java-symbol type="array" name="anim_controls_entries" />
-
   <!-- Slim recent app screen-->
   <java-symbol type="integer" name="config_recentDefaultDur" />
   <java-symbol type="integer" name="config_recentExitDur" />
@@ -129,4 +127,5 @@
 
   <!--Exposed Java styles for power menu -->
   <java-symbol type="style" name="Theme.Power.Dialog" />
+
 </resources>
