@@ -32,6 +32,8 @@ import com.android.systemui.qs.SecureSetting;
 import com.android.systemui.qs.QSTile;
 import com.android.systemui.R;
 
+import cyanogenmod.app.StatusBarPanelCustomTile;
+
 public class FloatingTile extends QSTile<QSTile.BooleanState> {
     public static final String SPEC = "floating";
 
@@ -73,8 +75,8 @@ public class FloatingTile extends QSTile<QSTile.BooleanState> {
     }
 
     @Override
-    protected void handleDetailClick(boolean state) {
-        showDetail(true);
+    protected void handleDetailClick() {
+        // Do nothing for now
     }
 
     @Override
