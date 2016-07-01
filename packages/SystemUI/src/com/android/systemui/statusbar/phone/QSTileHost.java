@@ -417,7 +417,7 @@ public class QSTileHost implements QSTile.Host, Tunable {
         else if (tileSpec.equals("caffeine")) return new CaffeineTile(this);
         else if (tileSpec.equals("sound")) return new SoundTile(this);
         else if (tileSpec.equals("screenrecord")) return new ScreenrecordTile(this);
-		else if (tileSpec.equals(FloatingTile.SPEC)) return new FloatingTile(this);
+		else if (tileSpec.equals("floating")) return new FloatingTile(this);
         else if (tileSpec.startsWith(IntentTile.PREFIX)) return IntentTile.create(this,tileSpec);
         else if (TextUtils.split(tileSpec, "\\|").length == 3) {
             /** restores placeholder for
