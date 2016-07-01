@@ -53,6 +53,11 @@ public class FloatingTile extends QSTile<QSTile.BooleanState> {
     }
 
     @Override
+    public DetailAdapter getDetailAdapter() {
+        return mDetailAdapter;
+    }
+
+    @Override
     protected void handleUserSwitch(int newUserId) {
         mSetting.setUserId(newUserId);
         handleRefreshState(mSetting.getValue());
@@ -67,11 +72,6 @@ public class FloatingTile extends QSTile<QSTile.BooleanState> {
     protected void handleClick() {
         setEnabled(!mState.value);
         refreshState();
-    }
-
-    @Override
-    protected void handleDetailClick() {
-        // Do nothing for now
     }
 
     @Override
