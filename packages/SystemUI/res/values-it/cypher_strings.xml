@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
      Copyright (C) 2015 AICP
+     
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
      You may obtain a copy of the License at
+     
           http://www.apache.org/licenses/LICENSE-2.0
+          
      Unless required by applicable law or agreed to in writing, software
      distributed under the License is distributed on an "AS IS" BASIS,
      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -13,6 +16,11 @@
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
+   <!-- Smart Dialog: Deny button [CHAR LIMIT=NONE] -->
+   <string name="smart_dialog_deny">NO</string>
+    <!-- Smart Dialog: Confirmation button [CHAR LIMIT=NONE] -->
+    <string name="smart_dialog_confirm">SI</string>
+    
     <!-- The text for the button in the notification window-shade that clears
          all of the currently visible notifications. [CHAR LIMIT=10]-->
     <string name="clear_recents">Chiudi tutti recenti</string>
@@ -98,15 +106,6 @@
     <string name="lte_on">LTE ON </string>
     <string name="lte_off">LTE OFF</string>
 
-    <!-- App sidebar -->
-    <string name="default_folder_text">Cartella</string>
-    <string name="title_activity_sidebar_configuration">Impostare contenuti appbar</string>
-    <string name="action_save">Salva</string>
-    <string name="toast_items_saved">Gli elementi in Appbar sono stati salvati.</string>
-    <string name="content_setup_instructions">Aggiungi gli elementi alla AppBar premendo a lungo su qualsiasi elemento sulla destra e trascinarlo verso l\' AppBar.\n\n Combina gli elementi nelle cartelle sovrapponendo un oggetto su un elemento esistente in App Bar.\n\n Per rimuovere un elemento basta semplicemente trascinarlo fuori dal \@appbar.</string>
-    <string name="content_setup_dismiss">Proseguire</string>
-    <string name="toast_not_installed">App non è installato</string>
-
     <!-- NavBar tile -->
     <string name="quick_settings_navigation_bar">Barra di navigazione</string>
   <string name="quick_settings_smartbar_off">SmartBar spenta</string>
@@ -185,17 +184,14 @@
     <!-- Title shown in recents popup for showing app launch in floating mode -->
     <string name="recent_float_mode_title">Modalità fluttuante</string>
 
-    <!-- App circle sidebar -->
-    <string name="app_float_maximize_item_title">Ingrandisci</string>
-  <string name="app_float_item_title">Visione fluttuante</string>
-  <string name="app_stop_item_title">Chiudi applicazione</string>
+    <!-- Title shown when app provides no interface -->
+    <string name="status_bar_floating_no_interface">L\'App non ha alcuna interfaccia</string>
 
     <!-- Floating Windows tile -->
     <string name="quick_settings_floating_windows_on">Modalità fluttuante attivata</string>
-  <string name="quick_settings_floating_windows_off">Modalità fluttuante disattivata</string>
+    <string name="quick_settings_floating_windows_off">Modalità fluttuante disattivata</string>
 
-    <!-- Floating Windows tile -->
-    <string name="quick_settings_slim_floats_on">Modalità slim float attivata</string>
-  <string name="quick_settings_slim_floats_off">Modalità slim float disattivata</string>
+    <!-- Blacklisted app for floating mode -->
+    <string name="floating_mode_blacklisted_app">L\'applicazione corrente è nella lista nera in modo che non verrà lanciata in modalità mobile</string>
 
 </resources>
