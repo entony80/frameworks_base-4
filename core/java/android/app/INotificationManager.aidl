@@ -52,9 +52,6 @@ interface INotificationManager
     void setPackagePeekable(String pkg, int uid, boolean peekable);
     boolean getPackagePeekable(String pkg, int uid);
 
-    void setFloatingModeBlacklistStatus(String pkg, boolean status);
-    boolean isPackageAllowedForFloatingMode(String pkg);
-
     void setPackageVisibilityOverride(String pkg, int uid, int visibility);
     int getPackageVisibilityOverride(String pkg, int uid);
 
