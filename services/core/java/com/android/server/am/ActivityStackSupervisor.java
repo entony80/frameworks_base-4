@@ -2395,12 +2395,9 @@ public final class ActivityStackSupervisor implements DisplayListener {
                 if ((launchFlags &
                         (FLAG_ACTIVITY_NEW_TASK | FLAG_ACTIVITY_TASK_ON_HOME))
                         == (FLAG_ACTIVITY_NEW_TASK | FLAG_ACTIVITY_TASK_ON_HOME)) {
-                    boolean floating = (launchFlags&Intent.FLAG_FLOATING_WINDOW) == Intent.FLAG_FLOATING_WINDOW;
-                    if (!floating) {
-                        // Caller wants to appear on home activity, so before starting
-                        // their own activity we will bring home to the front.
-                        r.task.setTaskToReturnTo(HOME_ACTIVITY_TYPE);
-                    }
+                    // Caller wants to appear on home activity, so before starting
+                    // their own activity we will bring home to the front.
+                    r.task.setTaskToReturnTo(HOME_ACTIVITY_TYPE);
                 }
             }
         } else if (sourceRecord != null) {
