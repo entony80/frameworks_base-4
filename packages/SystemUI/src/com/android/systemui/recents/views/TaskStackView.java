@@ -74,7 +74,6 @@ public class TaskStackView extends FrameLayout implements TaskStack.TaskStackCal
                                       boolean lockToTask);
         public void onTaskViewAppInfoClicked(Task t);
         public void onTaskViewDismissed(Task t);
-        public void onTaskFloatClicked(Task t);
         public void onAllTaskViewsDismissed(ArrayList<Task> removedTasks);
         public void onTaskStackFilterTriggered();
         public void onTaskStackUnfilterTriggered();
@@ -1485,12 +1484,6 @@ public class TaskStackView extends FrameLayout implements TaskStack.TaskStackCal
         popup.show();
     }
 
-    @Override
-    public void onTaskFloatClicked(TaskView tv) {
-        if (mCb != null) {
-            mCb.onTaskFloatClicked(tv.getTask());
-        }
-    }
 
     @Override
     public void onTaskViewClicked(TaskView tv, Task task, boolean lockToTask) {
