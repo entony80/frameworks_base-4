@@ -1312,41 +1312,14 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             if (showNav && !mRecreating) {
                 mNavigationBarView = mNavigationController.getNavigationBarView(mContext);
                 mNavigationBarView.setDisabledFlags(mDisabled1);
-				
-				// set up the OTS snackbar along with the navbar
-                mSnackbarView = (SettingConfirmationSnackbarView) View.inflate(context,
-                        R.layout.setting_confirmation_snackbar, null);
-                mNavigationBarView =
-                    (NavigationBarView) View.inflate(context, R.layout.navigation_bar, null);
-                mNavigationBarView.updateResources(getNavbarThemedResources());
-
-                mNavigationBarView.setDisabledFlags(mDisabled1);
-                mNavigationBarView.setBar(this);
-                mNavigationBarView.setOnVerticalChangedListener(
-                        new NavigationBarView.OnVerticalChangedListener() {
-                    @Override
-                    public void onVerticalChanged(boolean isVertical) {
-                        if (mAssistManager != null) {
-                            mAssistManager.onConfigurationChanged();
-                        }
-                        mNotificationPanel.setQsScrimEnabled(!isVertical);
-                    }
-                });
-                mNavigationBarView.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        checkUserAutohide(v, event);
-                        return false;
-                    }});
             }
         } catch (RemoteException ex) {
             // no window manager? good luck with that
 		}
-
-        if (mNavigationBarView == null) {
-            mNavigationBarView =
-                (NavigationBarView) View.inflate(context, R.layout.navigation_bar, null);
-        }
+		
+		// set up the OTS snackbar along with the navbar
+        mSnackbarView = (SettingConfirmationSnackbarView) View.inflate(context,
+                R.layout.setting_confirmation_snackbar, null);
 
         addGestureAnywhereView();
         addAppCircleSidebar();
