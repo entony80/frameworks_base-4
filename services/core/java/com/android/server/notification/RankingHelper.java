@@ -212,6 +212,9 @@ public class RankingHelper implements RankingConfig {
         for (int i = N - 1; i >= 0; i--) {
             final Record r = mRecords.valueAt(i);
             if (r.priority == DEFAULT_PRIORITY && r.peekable == DEFAULT_PEEKABLE
+                    && r.visibility == DEFAULT_VISIBILITY
+                    && r.keyguard == Notification.SHOW_ALL_NOTI_ON_KEYGUARD) {
+                mRecords.removeAt(i);
                     && r.visibility == DEFAULT_VISIBILITY && r.floating == DEFAULT_FLOATING) {
                 mRecords.remove(i);
             }
@@ -408,7 +411,6 @@ public class RankingHelper implements RankingConfig {
             return;
         }
         getOrCreateRecord(packageName, uid).keyguard = keyguard;
-	}
 
 	@Override
     public boolean getPackageFloating(String packageName, int uid) {
