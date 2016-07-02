@@ -94,9 +94,9 @@ public class FloatingTile extends QSTile<QSTile.BooleanState> {
         state.visible = true;
         state.label = mContext.getString(R.string.quick_settings_floating_label);
         if (enable) {
-            state.icon = ResourceIcon.get(R.drawable.ic_qs_floating_peek);
+            state.icon = ResourceIcon.get(R.drawable.ic_qs_floating_on);
         } else {
-            state.icon = ResourceIcon.get(R.drawable.ic_qs_floating_peek_disabled);
+            state.icon = ResourceIcon.get(R.drawable.ic_qs_floating_off);
         }
     }
 
