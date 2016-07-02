@@ -119,11 +119,8 @@ import com.android.systemui.RecentsComponent;
 import com.android.systemui.SwipeHelper;
 import com.android.systemui.SystemUI;
 import com.android.systemui.assist.AssistManager;
-<<<<<<< HEAD
 import com.android.systemui.navigation.Navigator;
-=======
 import com.android.systemui.chaos.lab.gestureanywhere.GestureAnywhereView;
->>>>>>> bdad8f0... Gesture Anywhere [1/2]
 import com.android.systemui.recents.Recents;
 import com.android.systemui.cm.SpamMessageProvider;
 import com.android.systemui.slimrecent.RecentController;
@@ -274,12 +271,10 @@ public abstract class BaseStatusBar extends SystemUI implements
 
     protected int mZenMode;
 
-<<<<<<< HEAD
     protected AppCircleSidebar mAppCircleSidebar;
-=======
+
     @ChaosLab(name="GestureAnywhere", classification=Classification.NEW_FIELD)
     protected GestureAnywhereView mGestureAnywhereView;
->>>>>>> bdad8f0... Gesture Anywhere [1/2]
 
     // which notification is currently being longpress-examined by the user
     private NotificationGuts mNotificationGutsExposed;
