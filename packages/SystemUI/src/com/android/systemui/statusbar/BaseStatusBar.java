@@ -192,8 +192,6 @@ public abstract class BaseStatusBar extends SystemUI implements
     protected INotificationManager mNoMan;
     protected IStatusBarService mBarService;
     protected H mHandler = createHandler();
-	
-	private NotificationManager mNotif;
 
     // all notifications
     protected NotificationData mNotificationData;
@@ -544,7 +542,7 @@ public abstract class BaseStatusBar extends SystemUI implements
                     }
                 }
             } else if (BANNER_ACTION_CANCEL.equals(action) || BANNER_ACTION_SETUP.equals(action)) {
-                mNotif.cancel(R.id.notification_hidden);
+                mNoMan.cancel(R.id.notification_hidden);
 
                 Settings.Secure.putInt(mContext.getContentResolver(),
                         Settings.Secure.SHOW_NOTE_ABOUT_NOTIFICATION_HIDING, 0);
@@ -921,7 +919,7 @@ public abstract class BaseStatusBar extends SystemUI implements
                             mContext.getString(R.string.hidden_notifications_setup),
                             setupIntent);
 
-            mNotif.notify(R.id.notification_hidden, note.build());
+            mNoMan.notify(R.id.notification_hidden, note.build());
         }
     }
 
