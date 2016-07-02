@@ -260,6 +260,8 @@ public abstract class BaseStatusBar extends SystemUI implements
     protected WindowManager mWindowManager;
     protected IWindowManager mWindowManagerService;
 
+    private NotificationManager mNoMan;
+
     protected abstract void refreshLayout(int layoutDirection);
 
     protected Display mDisplay;
@@ -325,7 +327,7 @@ public abstract class BaseStatusBar extends SystemUI implements
     private ArrayList<String> mWhitelist = new ArrayList<String>();
 
     public INotificationManager getNotificationManager() {
-        return mNoMan;
+        return mNotificationManager;
     }
 	
     private ActivityManager mActivityManager;
@@ -676,7 +678,7 @@ public abstract class BaseStatusBar extends SystemUI implements
         mWindowManager = (WindowManager)mContext.getSystemService(Context.WINDOW_SERVICE);
         mWindowManagerService = WindowManagerGlobal.getWindowManagerService();
 
-        mNoMan = (INotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
+        mNoMan = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
 
         mDisplay = mWindowManager.getDefaultDisplay();
         mDevicePolicyManager = (DevicePolicyManager)mContext.getSystemService(
@@ -1178,6 +1180,7 @@ public abstract class BaseStatusBar extends SystemUI implements
         final View settingsButton = guts.findViewById(R.id.notification_inspect_item);
         final View appSettingsButton
                 = guts.findViewById(R.id.notification_inspect_app_provided_settings);
+        final View filterButton = guts.findViewById(R.id.notification_inspect_filter_notification);
         if (appUid >= 0) {
             final int appUidF = appUid;
             settingsButton.setOnClickListener(new View.OnClickListener() {
@@ -1186,6 +1189,24 @@ public abstract class BaseStatusBar extends SystemUI implements
                     startAppNotificationSettingsActivity(pkg, appUidF);
                 }
             });
+
+            Notification notification = sbn.getNotification();
+            filterButton.setVisibility(SpamFilter.hasFilterableContent(notification)
+                    ? View.VISIBLE : View.GONE);
+            filterButton.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    AsyncTask.execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            ContentValues values = new ContentValues();
+                            String message = SpamFilter.getNotificationContent(
+                                    sbn.getNotification());
+                            values.put(NotificationTable.MESSAGE_TEXT, message);
+                            values.put(PackageTable.PACKAGE_NAME, pkg);
+                            mContext.getContentResolver().insert(SPAM_MESSAGE_URI, values);
+                        }
+                    });
+                    removeNotification(sbn.getKey(), null);
 
             if (isKeyguardShowing()) {
                 floatButton.setVisibility(View.GONE);
@@ -1237,6 +1258,7 @@ public abstract class BaseStatusBar extends SystemUI implements
             settingsButton.setVisibility(View.GONE);
             floatButton.setVisibility(View.GONE);
             appSettingsButton.setVisibility(View.GONE);
+            filterButton.setVisibility(View.GONE);
         }
 
     }
