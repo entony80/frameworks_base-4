@@ -183,11 +183,12 @@
 	<!-- Title shown in recents popup for showing app in floating mode -->
     <string name="recent_float_mode_title">Floating mode</string>
 	
-	<!-- Title shown when app provides no interface -->
-	<string name="status_bar_floating_no_interface">App provides no interface</string>
+	 <!-- Title shown when app provides no interface -->
+	 <string name="status_bar_floating_no_interface">App provides no interface</string>
 	 
-	<!-- Floating tile-->
-    <string name="qs_floating_headsup_label">Floating Peek</string>
+	 <!-- Floating tile-->
+    <string name="qs_floating_headsup_on">Floating mode is on</string>
+    <string name="qs_floating_headsup_off">Floating mode is off</string>
 
 </resources>
 

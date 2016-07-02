@@ -74,17 +74,32 @@ public class FloatingTile extends QSTile<QSTile.BooleanState> {
         final boolean enable = value != 0;
         state.value = enable;
         state.visible = true;
-        state.label = mContext.getString(R.string.qs_floating_headsup_label);
         if (enable) {
             state.icon = ResourceIcon.get(R.drawable.ic_qs_floating_on);
+            state.label = mContext.getString(
+                    R.string.qs_floating_headsup_on);
         } else {
-            state.icon = ResourceIcon.get(R.drawable.ic_qs_floating_off);
+            // TODO: add icon for disabled state
+            state.icon = ResourceIcon.get(R.drawable.ic_qs_floating_on);
+            state.label =  mContext.getString(
+                    R.string.qs_floating_headsup_off);
         }
     }
 
     @Override
     public int getMetricsCategory() {
         return MetricsLogger.QS_FLOATING;
+    }
+
+    @Override
+    protected String composeChangeAnnouncement() {
+        if (mState.value) {
+            return mContext.getString(
+                    R.string.qs_floating_headsup_on);
+        } else {
+            return mContext.getString(
+                    R.string.qs_floating_headsup_off);
+        }
     }
 
     @Override
