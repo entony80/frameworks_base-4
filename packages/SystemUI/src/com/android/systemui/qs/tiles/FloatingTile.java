@@ -39,7 +39,7 @@ public class FloatingTile extends QSTile<QSTile.BooleanState> {
     private final FloatingDetailAdapter mDetailAdapter;
 
     public FloatingTile(Host host) {
-        super(host);
+        super(host, SPEC);
         mDetailAdapter = new FloatingDetailAdapter();
 
         mSetting = new SecureSetting(mContext, mHandler, Secure.FLOATING_HEADSUP) {
@@ -67,13 +67,13 @@ public class FloatingTile extends QSTile<QSTile.BooleanState> {
     }
 
     @Override
-    protected void handleClick() {
+    protected void handleToggleClick() {
         setEnabled(!mState.value);
         refreshState();
     }
 
     @Override
-    protected void handleDetailClick(boolean state) {
+    protected void handleDetailClick() {
         showDetail(true);
     }
 
@@ -130,11 +130,6 @@ public class FloatingTile extends QSTile<QSTile.BooleanState> {
             return mState.value;
         }
 
-		@Override
-        public StatusBarPanelCustomTile getCustomTile() {
-            return null;
-        }
-		
         @Override
         public void setToggleState(boolean state) {
             MetricsLogger.action(mContext, MetricsLogger.QS_FLOATING_TOGGLE, state);
