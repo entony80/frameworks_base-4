@@ -68,7 +68,6 @@ public class TaskViewHeader extends FrameLayout {
     ImageView mMoveTaskButton;
     ImageView mDismissButton;
     ImageView mPinButton;
-    ImageView mFloatButton;
     ImageView mApplicationIcon;
     TextView mActivityDescription;
 
@@ -80,8 +79,6 @@ public class TaskViewHeader extends FrameLayout {
     Drawable mDarkDismissDrawable;
     Drawable mLightPinDrawable;
     Drawable mDarkPinDrawable;
-    Drawable mLightFloatButtonDrawable;
-    Drawable mDarkFloatButtonDrawable;
     RippleDrawable mBackground;
     GradientDrawable mBackgroundColorDrawable;
     AnimatorSet mFocusAnimator;
@@ -134,10 +131,6 @@ public class TaskViewHeader extends FrameLayout {
         mLightPinDrawable = res.getDrawable(R.drawable.ic_pin);
         mDarkPinDrawable = res.getDrawable(R.drawable.ic_pin_dark);
 
-        // Load the floating button resources
-        mLightFloatButtonDrawable = context.getDrawable(R.drawable.ic_recents_floating_light);
-        mDarkFloatButtonDrawable = context.getDrawable(R.drawable.ic_recents_floating_dark);
-
         // Configure the highlight paint
         if (sHighlightPaint == null) {
             sHighlightPaint = new Paint();
@@ -158,7 +151,6 @@ public class TaskViewHeader extends FrameLayout {
         mApplicationIcon = (ImageView) findViewById(R.id.application_icon);
         mActivityDescription = (TextView) findViewById(R.id.activity_description);
         mDismissButton = (ImageView) findViewById(R.id.dismiss_task);
-        mFloatButton = (ImageView) findViewById(R.id.float_button);
         mMoveTaskButton = (ImageView) findViewById(R.id.move_task);
         mPinButton = (ImageView) findViewById(R.id.lock_to_app_fab);
 
@@ -242,8 +234,6 @@ public class TaskViewHeader extends FrameLayout {
                 mConfig.taskBarViewLightTextColor : mConfig.taskBarViewDarkTextColor);
         mPinButton.setImageDrawable(t.useLightOnPrimaryColor ?
                 mLightPinDrawable : mDarkPinDrawable);
-        mFloatButton.setImageDrawable(t.useLightOnPrimaryColor ?
-                mLightFloatButtonDrawable : mDarkFloatButtonDrawable);
         mDismissButton.setImageDrawable(t.useLightOnPrimaryColor ?
                 mLightDismissDrawable : mDarkDismissDrawable);
         mDismissButton.setContentDescription(String.format(mDismissContentDescription,
@@ -320,19 +310,6 @@ public class TaskViewHeader extends FrameLayout {
         }
     }
 
-    /** Animates this task bar floating button when launching a task. */
-    void startLaunchFloatButtonAnimation() {
-        if (mFloatButton.getVisibility() == View.VISIBLE) {
-            mFloatButton.animate().cancel();
-            mFloatButton.animate()
-                    .alpha(0f)
-                    .setStartDelay(0)
-                    .setInterpolator(mConfig.fastOutSlowInInterpolator)
-                    .setDuration(mConfig.taskViewExitToAppDuration)
-                    .start();
-        }
-    }
-
     /** Animates this task bar if the user does not interact with the stack after a certain time. */
     void startNoUserInteractionAnimation() {
         if (mDismissButton.getVisibility() != View.VISIBLE) {
@@ -357,18 +334,6 @@ public class TaskViewHeader extends FrameLayout {
                     .withLayer()
                     .start();
         }
-		if (mFloatButton.getVisibility() != View.VISIBLE) {
-            mFloatButton.setVisibility(View.VISIBLE);
-            mFloatButton.setEnabled(!mConfig.launchedFromHome);
-            mFloatButton.setAlpha(mConfig.launchedFromHome ? 0.5f : 1.0f);
-            mFloatButton.setAlpha(0f);
-            mFloatButton.animate()
-                    .alpha(1f)
-                    .setStartDelay(0)
-                    .setInterpolator(mConfig.fastOutLinearInInterpolator)
-                    .setDuration(mConfig.taskViewEnterFromAppDuration)
-                    .start();
-        }
     }
 
     /** Mark this task view that the user does has not interacted with the stack after a certain time. */
@@ -385,18 +350,12 @@ public class TaskViewHeader extends FrameLayout {
             mPinButton.setVisibility(View.VISIBLE);
             mPinButton.setAlpha(1f);
         }
-		if (mFloatButton.getVisibility() != View.VISIBLE) {
-            mFloatButton.animate().cancel();
-            mFloatButton.setVisibility(View.VISIBLE);
-            mFloatButton.setAlpha(1f);
-        }
     }
 
     /** Resets the state tracking that the user has not interacted with the stack after a certain time. */
     void resetNoUserInteractionState() {
         mDismissButton.setVisibility(View.INVISIBLE);
         mPinButton.setVisibility(View.INVISIBLE);
-		mFloatButton.setVisibility(View.INVISIBLE);
     }
 
     @Override

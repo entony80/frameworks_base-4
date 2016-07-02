@@ -1153,10 +1153,6 @@ public final class ActivityStackSupervisor implements DisplayListener {
         final long origId = Binder.clearCallingIdentity();
         try {
             synchronized (mService) {
-                boolean floating = false;
-                if (intents.length > 0) {
-                    floating = (intents[intents.length - 1].getFlags()&Intent.FLAG_FLOATING_WINDOW) == Intent.FLAG_FLOATING_WINDOW;
-                }
                 ActivityRecord[] outActivity = new ActivityRecord[1];
                 for (int i=0; i<intents.length; i++) {
                     Intent intent = intents[i];
@@ -1186,9 +1182,6 @@ public final class ActivityStackSupervisor implements DisplayListener {
                                 "FLAG_CANT_SAVE_STATE not supported here");
                     }
 
-                    if (floating) {
-                        intent.addFlags(Intent.FLAG_FLOATING_WINDOW);
-                    }
                     Bundle theseOptions;
                     if (options != null && i == intents.length-1) {
                         theseOptions = options;
@@ -2395,12 +2388,9 @@ public final class ActivityStackSupervisor implements DisplayListener {
                 if ((launchFlags &
                         (FLAG_ACTIVITY_NEW_TASK | FLAG_ACTIVITY_TASK_ON_HOME))
                         == (FLAG_ACTIVITY_NEW_TASK | FLAG_ACTIVITY_TASK_ON_HOME)) {
-                    boolean floating = (launchFlags&Intent.FLAG_FLOATING_WINDOW) == Intent.FLAG_FLOATING_WINDOW;
-                    if (!floating) {
-                        // Caller wants to appear on home activity, so before starting
-                        // their own activity we will bring home to the front.
-                        r.task.setTaskToReturnTo(HOME_ACTIVITY_TYPE);
-                    }
+                    // Caller wants to appear on home activity, so before starting
+                    // their own activity we will bring home to the front.
+                    r.task.setTaskToReturnTo(HOME_ACTIVITY_TYPE);
                 }
             }
         } else if (sourceRecord != null) {

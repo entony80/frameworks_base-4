@@ -1559,20 +1559,6 @@ public class NotificationManagerService extends SystemService {
         }
 
         @Override
-        public void setPackageFloating(String pkg, int uid, boolean floating) {
-            checkCallerIsSystem();
-
-            mRankingHelper.setPackageFloating(pkg, uid, floating);
-            savePolicyFile();
-        }
-
-        @Override
-        public boolean getPackageFloating(String pkg, int uid) {
-            enforceSystemOrSystemUI("INotificationManager.getPackageFloating");
-            return mRankingHelper.getPackageFloating(pkg, uid);
-        }
-
-        @Override
         public void setPackageVisibilityOverride(String pkg, int uid, int visibility) {
             checkCallerIsSystem();
             mRankingHelper.setPackageVisibilityOverride(pkg, uid, visibility);

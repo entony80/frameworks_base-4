@@ -32,7 +32,4 @@ public interface RankingConfig {
 
     int getShowNotificationForPackageOnKeyguard(String packageName, int uid);
 
-    boolean getPackageFloating(String packageName, int uid);
-
-    void setPackageFloating(String packagename, int uid, boolean floating);
 }
