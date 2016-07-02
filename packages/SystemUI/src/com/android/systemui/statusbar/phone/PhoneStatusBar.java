@@ -1341,6 +1341,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             }
         } catch (RemoteException ex) {
             // no window manager? good luck with that
+		}
 
         if (mNavigationBarView == null) {
             mNavigationBarView =
