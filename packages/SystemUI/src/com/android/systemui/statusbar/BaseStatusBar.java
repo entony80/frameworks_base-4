@@ -2283,7 +2283,7 @@ public abstract class BaseStatusBar extends SystemUI implements
         if (!mShowLockscreenNotifications || mNotificationData.isAmbient(sbn.getKey())) {
             return false;
         }
-        final int showOnKeyguard = mNotif.getShowNotificationForPackageOnKeyguard(
+        final int showOnKeyguard = mNoMan.getShowNotificationForPackageOnKeyguard(
                 sbn.getPackageName(), sbn.getUid());
         boolean isKeyguardAllowedForApp =
                 (showOnKeyguard & Notification.SHOW_ALL_NOTI_ON_KEYGUARD) != 0;
