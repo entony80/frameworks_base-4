@@ -55,7 +55,6 @@ import com.android.systemui.qs.tiles.EditTile;
 import com.android.systemui.qs.tiles.ExpandedDesktopTile;
 import com.android.systemui.qs.tiles.FlashlightTile;
 import com.android.systemui.qs.tiles.HeadsUpTile;
-import com.android.systemui.qs.tiles.FloatingTile;
 import com.android.systemui.qs.tiles.HotspotTile;
 import com.android.systemui.qs.tiles.IntentTile;
 import com.android.systemui.qs.tiles.LocationTile;
@@ -417,7 +416,6 @@ public class QSTileHost implements QSTile.Host, Tunable {
         else if (tileSpec.equals("caffeine")) return new CaffeineTile(this);
         else if (tileSpec.equals("sound")) return new SoundTile(this);
         else if (tileSpec.equals("screenrecord")) return new ScreenrecordTile(this);
-		else if (tileSpec.equals(FloatingTile.SPEC)) return new FloatingTile(this);
         else if (tileSpec.startsWith(IntentTile.PREFIX)) return IntentTile.create(this,tileSpec);
         else if (TextUtils.split(tileSpec, "\\|").length == 3) {
             /** restores placeholder for

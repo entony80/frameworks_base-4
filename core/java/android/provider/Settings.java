@@ -7549,16 +7549,7 @@ public final class Settings {
         public static final String NAVIGATION_BAR_WIDTH = "navigation_bar_width";
 
         /**
-         * Whether user has enabled floating mode for headsup.
-         * <p>
-         * Type: int (0 for false, 1 for true)
-         * @hide
-         */
-        public static final String FLOATING_HEADSUP = "floating_headsup";
-
-        /**
-         * Whether the camera launch gesture should be disabled.
-		 * Navigation bar mode
+         * Navigation bar mode
          *
          * @hide
          */
