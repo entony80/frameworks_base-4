@@ -661,8 +661,6 @@
     <string name="quick_settings_more_settings">More settings</string>
     <!-- QuickSettings: Control panel: Label for button that dismisses control panel. [CHAR LIMIT=NONE] -->
     <string name="quick_settings_done">Done</string>
-	<!-- QuickSettings: Control panel: Label for button that starts tile editing mode. [CHAR LIMIT=NONE] -->
-	<string name="quick_settings_edit">Edit</string>
     <!-- QuickSettings: Control panel: Label for connected device. [CHAR LIMIT=NONE] -->
     <string name="quick_settings_connected">Connected</string>
     <!-- QuickSettings: Control panel: Label for connecting device. [CHAR LIMIT=NONE] -->
