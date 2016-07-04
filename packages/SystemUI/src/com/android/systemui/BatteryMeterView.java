@@ -477,7 +477,7 @@ public class BatteryMeterView extends View implements DemoMode,
         void setDarkIntensity(int backgroundColor, int fillColor);
     }
 
-    protected class AllInOneBatteryMeterDrawable implements BatteryMeterDrawable {
+    protected class AllInOneBatteryMeterDrawable  implements BatteryMeterDrawable {
         private static final boolean SINGLE_DIGIT_PERCENT = false;
         private static final boolean SHOW_100_PERCENT = false;
 
@@ -564,7 +564,7 @@ public class BatteryMeterView extends View implements DemoMode,
             }
             if (mChargingAnimationsEnabled && !mThemeApplied) {
                 if (tracker.level < 100 && tracker.plugged) {
-                    startChargingAnimation(0);
+                    startChargingAnimation(true);
                 } else {
                     cancelChargingAnimation();
                 }
@@ -573,17 +573,16 @@ public class BatteryMeterView extends View implements DemoMode,
 
         @Override
         public void onBatteryLevelChanged(int level, boolean pluggedIn, boolean charging) {
-            if (pluggedIn && !mThemeApplied && !mChargingAnimationsEnabled
+            if (charging && !mThemeApplied && !mChargingAnimationsEnabled
                     && mLevel != level) {
-                startChargingAnimation(mLevel == 0 ? 3 : 1);
+                startChargingAnimation(false);
                 mLevel = level;
-            } else if (!pluggedIn) {
+            } else {
                 mLevel = 0;
-                cancelChargingAnimation();
             }
         }
 
-        private void startChargingAnimation(final int repeat) {
+        private void startChargingAnimation(final boolean invalidate) {
             if (mLevelAlpha == 0 || mAnimator != null
                     || mMeterMode != BatteryMeterMode.BATTERY_METER_CIRCLE) {
                 return;
@@ -599,30 +598,25 @@ public class BatteryMeterView extends View implements DemoMode,
                 }
             });
             mAnimator.addListener(new AnimatorListenerAdapter() {
-                private boolean mCanceled;
-
                 @Override
                 public void onAnimationCancel(Animator animation) {
-                    mCanceled = true;
                     mLevelDrawable.setAlpha(defaultAlpha);
                     mAnimator = null;
-                    invalidate();
                 }
 
                 @Override
                 public void onAnimationEnd(Animator animation) {
-                    if (mCanceled) return;
                     mLevelDrawable.setAlpha(defaultAlpha);
                     mAnimator = null;
-                    if (repeat <= 0) {
-                        startChargingAnimation(0);
-                    } else if (repeat != 1) {
-                        startChargingAnimation(repeat - 1);
+                    if (invalidate) {
+                        invalidate();
                     }
                 }
             });
             mAnimator.setDuration(2000);
-            mAnimator.setStartDelay(500);
+            if (invalidate) {
+                mAnimator.setStartDelay(500);
+            }
             mAnimator.start();
         }
 
