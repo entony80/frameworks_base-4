@@ -76,7 +76,6 @@ public class BatteryMeterView extends View implements DemoMode,
     private final int mCriticalLevel;
 
     private boolean mAnimationsEnabled;
-    private boolean mChargingAnimationsEnabled;
 
     private BatteryStateRegistar mBatteryStateRegistar;
     private BatteryController mBatteryController;
@@ -311,17 +310,7 @@ public class BatteryMeterView extends View implements DemoMode,
     public void setAnimationsEnabled(boolean enabled) {
         if (mAnimationsEnabled != enabled) {
             mAnimationsEnabled = enabled;
-            setLayerType(mAnimationsEnabled || mChargingAnimationsEnabled ?
-                    LAYER_TYPE_HARDWARE : LAYER_TYPE_NONE, null);
-            invalidate();
-        }
-    }
-
-    public void setChargingAnimationsEnabled(boolean enabled) {
-        if (mChargingAnimationsEnabled != enabled) {
-            mChargingAnimationsEnabled = enabled;
-            setLayerType(mAnimationsEnabled || mChargingAnimationsEnabled ?
-                    LAYER_TYPE_HARDWARE : LAYER_TYPE_NONE, null);
+            setLayerType(mAnimationsEnabled ? LAYER_TYPE_HARDWARE : LAYER_TYPE_NONE, null);
             invalidate();
         }
     }
@@ -477,7 +466,7 @@ public class BatteryMeterView extends View implements DemoMode,
         void setDarkIntensity(int backgroundColor, int fillColor);
     }
 
-    protected class AllInOneBatteryMeterDrawable implements BatteryMeterDrawable {
+    protected class AllInOneBatteryMeterDrawable  implements BatteryMeterDrawable {
         private static final boolean SINGLE_DIGIT_PERCENT = false;
         private static final boolean SHOW_100_PERCENT = false;
 
@@ -501,16 +490,11 @@ public class BatteryMeterView extends View implements DemoMode,
         private BatteryMeterMode mMode;
         private int mTextGravity;
 
-        private int mLevelAlpha;
         private ValueAnimator mAnimator;
-        private int mLevel;
-
-        private boolean mThemeApplied;
 
         public AllInOneBatteryMeterDrawable(Resources res, BatteryMeterMode mode) {
             super();
 
-            mThemeApplied = isThemeApplied();
             loadBatteryDrawables(res, mode);
 
             mMode = mode;
@@ -562,74 +546,37 @@ public class BatteryMeterView extends View implements DemoMode,
             if (mAnimationsEnabled) {
                 // TODO: Allow custom animations to be used
             }
-            if (mChargingAnimationsEnabled && !mThemeApplied) {
-                if (tracker.level < 100 && tracker.plugged) {
-                    startChargingAnimation(0);
-                } else {
-                    cancelChargingAnimation();
-                }
-            }
         }
 
         @Override
         public void onBatteryLevelChanged(int level, boolean pluggedIn, boolean charging) {
-            if (pluggedIn && !mThemeApplied && !mChargingAnimationsEnabled
-                    && mLevel != level) {
-                startChargingAnimation(mLevel == 0 ? 3 : 1);
-                mLevel = level;
-            } else if (!pluggedIn) {
-                mLevel = 0;
-                cancelChargingAnimation();
-            }
-        }
+            if (charging && !isThemeApplied()) {
+                if (mAnimator != null) mAnimator.cancel();
 
-        private void startChargingAnimation(final int repeat) {
-            if (mLevelAlpha == 0 || mAnimator != null
-                    || mMeterMode != BatteryMeterMode.BATTERY_METER_CIRCLE) {
-                return;
-            }
-
-            final int defaultAlpha = mLevelAlpha;
-            mAnimator = ValueAnimator.ofInt(defaultAlpha, 0, defaultAlpha);
-            mAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(ValueAnimator animation) {
-                    mLevelDrawable.setAlpha((int) animation.getAnimatedValue());
-                    invalidate();
-                }
-            });
-            mAnimator.addListener(new AnimatorListenerAdapter() {
-                private boolean mCanceled;
-
-                @Override
-                public void onAnimationCancel(Animator animation) {
-                    mCanceled = true;
-                    mLevelDrawable.setAlpha(defaultAlpha);
-                    mAnimator = null;
-                    invalidate();
-                }
-
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    if (mCanceled) return;
-                    mLevelDrawable.setAlpha(defaultAlpha);
-                    mAnimator = null;
-                    if (repeat <= 0) {
-                        startChargingAnimation(0);
-                    } else if (repeat != 1) {
-                        startChargingAnimation(repeat - 1);
+                final int defaultAlpha = mLevelDrawable.getAlpha();
+                mAnimator = ValueAnimator.ofInt(defaultAlpha, 0, defaultAlpha);
+                mAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                    @Override
+                    public void onAnimationUpdate(ValueAnimator animation) {
+                        mLevelDrawable.setAlpha((int) animation.getAnimatedValue());
+                        invalidate();
                     }
-                }
-            });
-            mAnimator.setDuration(2000);
-            mAnimator.setStartDelay(500);
-            mAnimator.start();
-        }
+                });
+                mAnimator.addListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationCancel(Animator animation) {
+                        mLevelDrawable.setAlpha(defaultAlpha);
+                        mAnimator = null;
+                    }
 
-        private void cancelChargingAnimation() {
-            if (mAnimator != null) {
-                mAnimator.cancel();
-                mAnimator = null;
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        mLevelDrawable.setAlpha(defaultAlpha);
+                        mAnimator = null;
+                    }
+                });
+                mAnimator.setDuration(2000);
+                mAnimator.start();
             }
         }
 
@@ -704,7 +651,7 @@ public class BatteryMeterView extends View implements DemoMode,
         }
 
         private void loadBatteryDrawables(Resources res, BatteryMeterMode mode) {
-            if (mThemeApplied) {
+            if (isThemeApplied()) {
                 try {
                     checkBatteryMeterDrawableValid(res, mode);
                 } catch (BatteryMeterDrawableException e) {
@@ -758,10 +705,8 @@ public class BatteryMeterView extends View implements DemoMode,
 
             // Now draw the level indicator
             // set the level and tint color of the fill drawable
-            int levelColor = getColorForLevel(level);
-            mLevelAlpha = Color.alpha(levelColor);
             mLevelDrawable.setCurrentFraction(level / 100f);
-            mLevelDrawable.setTint(levelColor);
+            mLevelDrawable.setTint(getColorForLevel(level));
             mBatteryDrawable.draw(canvas);
 
             // if chosen by options, draw percentage text in the middle
