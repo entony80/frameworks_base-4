@@ -25,10 +25,10 @@
         android:name="mask"
         android:pathData="@string/battery_circle_full" />
 
-    <!-- Path will be tinted based on battery level -->
+    <!-- Path will be tinted based on light/dark modes -->
     <path
-        android:name="battery_level"
+        android:name="frame"
         android:fillColor="#000000"
         android:strokeWidth="1"
-        android:pathData="@string/battery_circle_empty" />
+        android:pathData="@string/battery_circle_full" />
 </vector>

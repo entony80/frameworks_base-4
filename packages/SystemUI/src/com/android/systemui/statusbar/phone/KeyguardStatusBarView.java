@@ -57,7 +57,6 @@ public class KeyguardStatusBarView extends RelativeLayout {
     private View mSystemIconsSuperContainer;
     private MultiUserSwitch mMultiUserSwitch;
     private ImageView mMultiUserAvatar;
-    private BatteryMeterView mBatteryMeter;
     private BatteryLevelTextView mBatteryLevel;
     private BatteryLevelTextView mDockBatteryLevel;
 	
@@ -133,7 +132,6 @@ public class KeyguardStatusBarView extends RelativeLayout {
         mSystemIconsSuperContainer = findViewById(R.id.system_icons_super_container);
         mMultiUserSwitch = (MultiUserSwitch) findViewById(R.id.multi_user_switch);
         mMultiUserAvatar = (ImageView) findViewById(R.id.multi_user_avatar);
-        mBatteryMeter = (BatteryMeterView) findViewById(R.id.battery);
         mBatteryLevel = (BatteryLevelTextView) findViewById(R.id.battery_level_text);
         mDockBatteryLevel = (BatteryLevelTextView) findViewById(R.id.dock_battery_level_text);
         mCarrierLabel = (TextView) findViewById(R.id.keyguard_carrier_text);
@@ -334,10 +332,10 @@ public class KeyguardStatusBarView extends RelativeLayout {
     }
 
     public void setBatteryController(BatteryController batteryController) {
-		mBatteryController = batteryController;
-		mBatteryMeter.setBatteryController(batteryController);
-        mBatteryMeter.setChargingAnimationsEnabled(true);
-        mBatteryLevel.setBatteryController(batteryController);
+        BatteryMeterView v = ((BatteryMeterView) findViewById(R.id.battery));
+        v.setBatteryStateRegistar(batteryController);
+        v.setBatteryController(batteryController);
+        mBatteryLevel.setBatteryStateRegistar(batteryController);
     }
 
     public void setDockBatteryController(DockBatteryController dockBatteryController) {
