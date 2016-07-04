@@ -54,6 +54,7 @@ import com.android.systemui.qs.tiles.DndTile;
 import com.android.systemui.qs.tiles.EditTile;
 import com.android.systemui.qs.tiles.ExpandedDesktopTile;
 import com.android.systemui.qs.tiles.FlashlightTile;
+import com.android.systemui.qs.tiles.FloatingWindowsTile;
 import com.android.systemui.qs.tiles.HeadsUpTile;
 import com.android.systemui.qs.tiles.HotspotTile;
 import com.android.systemui.qs.tiles.IntentTile;
@@ -326,7 +327,7 @@ public class QSTileHost implements QSTile.Host, Tunable {
     public SecurityController getSecurityController() {
         return mSecurity;
     }
-    
+
     @Override
     public void onTuningChanged(String key, String newValue) {
         if (!CMSettings.Secure.QS_TILES.equals(key)) {
@@ -416,6 +417,7 @@ public class QSTileHost implements QSTile.Host, Tunable {
         else if (tileSpec.equals("caffeine")) return new CaffeineTile(this);
         else if (tileSpec.equals("sound")) return new SoundTile(this);
         else if (tileSpec.equals("screenrecord")) return new ScreenrecordTile(this);
+        else if (tileSpec.equals("float_mode")) return new FloatingWindowsTile(this);
         else if (tileSpec.startsWith(IntentTile.PREFIX)) return IntentTile.create(this,tileSpec);
         else if (TextUtils.split(tileSpec, "\\|").length == 3) {
             /** restores placeholder for
@@ -528,6 +530,7 @@ public class QSTileHost implements QSTile.Host, Tunable {
         else if (spec.equals("caffeine")) return R.string.quick_settings_caffeine_label;
         else if (spec.equals("sound")) return R.string.quick_settings_sound_label;
         else if (spec.equals("screenrecord")) return R.string.quick_settings_screenrecord_label;
+        else if (spec.equals("float_mode")) return R.string.recent_float_mode_title;
         return 0;
     }
 
@@ -573,6 +576,7 @@ public class QSTileHost implements QSTile.Host, Tunable {
         else if (spec.equals("caffeine")) return R.drawable.ic_qs_caffeine_on;
         else if (spec.equals("sound")) return R.drawable.ic_qs_ringer_audible;
         else if (spec.equals("screenrecord")) return R.drawable.ic_qs_screenrecord;
+        else if (spec.equals("float_mode")) return R.drawable.ic_qs_floating_on;
         return 0;
     }
 
