@@ -266,6 +266,7 @@ public class Action {
         }
         context.startActivityAsUser(intent,
                 new UserHandle(UserHandle.USER_CURRENT));
+		}
     }
 
     private static void dispatchMediaKeyWithWakeLock(int keycode, Context context) {
