@@ -438,8 +438,6 @@ public class SystemConfig {
                                 + parser.getPositionDescription());
                     } else {
                         mLinkedApps.add(makeLink(pkgname, state));
-<<<<<<< HEAD
-=======
                     }
                     XmlUtils.skipCurrentTag(parser);
                 } else if ("backup-transport-whitelisted-service".equals(name)) {
@@ -457,7 +455,6 @@ public class SystemConfig {
                         } else {
                             mBackupTransportWhitelist.add(cn);
                         }
->>>>>>> 8c8e146efbeaa07368c4938048e3915a60134ba2
                     }
                     XmlUtils.skipCurrentTag(parser);
 
