@@ -1315,10 +1315,6 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             // no window manager? good luck with that
 		}
 		
-		// set up the OTS snackbar along with the navbar
-        mSnackbarView = (SettingConfirmationSnackbarView) View.inflate(context,
-                R.layout.setting_confirmation_snackbar, null);
-
         addGestureAnywhereView();
         addAppCircleSidebar();
 
