@@ -214,9 +214,6 @@ public abstract class BaseStatusBar extends SystemUI implements
 
     // on-screen navigation buttons
     protected Navigator mNavigationBarView = null;
-	
-    // Smart Dialog snackbar inherits
-	protected SettingConfirmationSnackbarView mSnackbarView = null;
 
     protected boolean mDeviceInteractive;
 
