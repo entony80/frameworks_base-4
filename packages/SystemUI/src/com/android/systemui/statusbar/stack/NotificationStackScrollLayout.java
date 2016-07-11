@@ -1789,12 +1789,6 @@ public class NotificationStackScrollLayout extends ViewGroup
         generateAddAnimation(child, false /* fromMoreCard */);
         updateAnimationState(child);
         updateChronometerForChild(child);
-        if (canChildBeDismissed(child)) {
-            // Make sure the dismissButton is visible and not in the animated state.
-            // We need to do this to avoid a race where a clearable notification is added after the
-            // dismiss animation is finished
-            mDismissView.showClearButton();
-        }
     }
 
     private void updateHideSensitiveForChild(View child) {
@@ -2633,7 +2627,8 @@ public class NotificationStackScrollLayout extends ViewGroup
                 updateContentHeight();
                 notifyHeightChangeListener(mDismissView);
             } else {
-                Runnable dimissHideFinishRunnable = new Runnable() {
+                mDismissView.setWillBeGone(true);
+                mDismissView.performVisibilityAnimation(false, new Runnable() {
                     @Override
                     public void run() {
                         mDismissView.setVisibility(GONE);
@@ -2641,21 +2636,13 @@ public class NotificationStackScrollLayout extends ViewGroup
                         updateContentHeight();
                         notifyHeightChangeListener(mDismissView);
                     }
-                };
-                if (mDismissView.isButtonVisible() && mIsExpanded && mAnimationsEnabled) {
-                    mDismissView.setWillBeGone(true);
-                    mDismissView.performVisibilityAnimation(false, dimissHideFinishRunnable);
-                } else {
-                    dimissHideFinishRunnable.run();
-                    mDismissView.showClearButton();
-                }
+                });
             }
         }
     }
 
     public void setDismissAllInProgress(boolean dismissAllInProgress) {
         mDismissAllInProgress = dismissAllInProgress;
-        mDismissView.setDismissAllInProgress(dismissAllInProgress);
         mAmbientState.setDismissAllInProgress(dismissAllInProgress);
         if (dismissAllInProgress) {
             disableClipOptimization();
