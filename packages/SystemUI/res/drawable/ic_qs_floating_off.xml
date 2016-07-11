@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--  Copyright (C) 2016 CypherOS
+
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:width="48dp"
+    android:height="48dp"
+    android:viewportWidth="48"
+    android:viewportHeight="48">
+
+    <path
+        android:name="Floating-Off"
+        android:fillColor="#4DFFFFFF"
+        android:pathData="M22,13 L35.0006308,13 C35.0003476,13 35,12.9996524 35,12.9993692 L35,26 L39,30
+L39,12.9993692 C39,10.7904482 37.2094214,9 35.0006308,9 L18,9 L22,13 L22,13
+L22,13 Z M13,15.630709 L40.8695525,43.5002615 L43.6979797,40.6718344
+L6.92842703,3.90228176 L4.0999999,6.73070888 L9,11.630709 L9,35.0029998
+C9,37.2023415 10.789518,39 12.9970002,39 L36.3654022,39 L32.3665282,35
+L12.9970002,35 C13.0027243,35 13,34.9972718 13,35.0029998 L13,15.630709
+L13,15.630709 L13,15.630709 Z M13,0 L35,0 L35,4 L13,4 L13,0 L13,0 Z M13,44
+L35,44 L35,48 L13,48 L13,44 L13,44 Z"/>
+
+</vector>

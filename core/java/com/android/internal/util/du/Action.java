@@ -260,9 +260,13 @@ public class Action {
                     Intent.FLAG_ACTIVITY_NEW_TASK
                     | Intent.FLAG_ACTIVITY_SINGLE_TOP
                     | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            context.startActivityAsUser(intent,
-                    new UserHandle(UserHandle.USER_CURRENT));
+        if (Settings.System.getInt(context.getContentResolver(),
+                Settings.System.SLIM_ACTION_FLOATS, 0) == 1) {
+            intent.setFlags(Intent.FLAG_FLOATING_WINDOW);
         }
+        context.startActivityAsUser(intent,
+                new UserHandle(UserHandle.USER_CURRENT));
+		}
     }
 
     private static void dispatchMediaKeyWithWakeLock(int keycode, Context context) {

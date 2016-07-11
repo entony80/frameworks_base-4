@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--  Copyright (C) 2016 CypherOS
+
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <path
+        android:name="Floating-Window"
+        android:fillColor="#99000000"
+        android:pathData="M18,4 L6,4 C4.9,4 4,4.9 4,6 L4,18 C4,19.1 4.9,20 6,20 L18,20 C19.1,20 20,19.1
+20,18 L20,6 C20,4.9 19.1,4 18,4 L18,4 L18,4 Z M18,18 L6,18 L6,6 L18,6 L18,18
+L18,18 Z M6,22 L18,22 L18,24 L6,24 L6,22 L6,22 Z M6,0 L18,0 L18,2 L6,2 L6,0 L6,0
+Z"/>
+
+</vector>
