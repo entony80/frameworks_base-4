@@ -132,6 +132,13 @@ public class DismissView extends ExpandableView {
     public void setOnButtonClickListener(OnClickListener onClickListener) {
         mClearAllText.setOnClickListener(onClickListener);
     }
+	
+	public boolean isOnEmptySpace(float touchX, float touchY) {
+        return touchX < mContent.getX()
+                || touchX > mContent.getX() + mContent.getWidth()
+                || touchY < mContent.getY()
+                || touchY > mContent.getY() + mContent.getHeight();
+    }
 
     @Override
     public boolean hasOverlappingRendering() {
