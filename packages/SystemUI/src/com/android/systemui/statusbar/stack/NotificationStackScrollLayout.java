@@ -2746,35 +2746,6 @@ public class NotificationStackScrollLayout extends ViewGroup
         }
     }
 
-    public boolean isBelowLastNotification(float touchX, float touchY) {
-        int childCount = getChildCount();
-        for (int i = childCount - 1; i >= 0; i--) {
-            ExpandableView child = (ExpandableView) getChildAt(i);
-            if (child.getVisibility() != View.GONE) {
-                float childTop = child.getY();
-                if (childTop > touchY) {
-                    // we are above a notification entirely let's abort
-                    return false;
-                }
-                boolean belowChild = touchY > childTop + child.getActualHeight();
-                if (child == mDismissView) {
-                    if(!belowChild && !mDismissView.isOnEmptySpace(touchX - mDismissView.getX(),
-                                    touchY - childTop)) {
-                        // We clicked on the dismiss button
-                        return false;
-                    }
-                } else if (child == mEmptyShadeView) {
-                    // We arrived at the empty shade view, for which we accept all clicks
-                    return true;
-                } else if (!belowChild){
-                    // We are on a child
-                    return false;
-                }
-            }
-        }
-        return touchY > mTopPadding + mStackTranslation;
-    }
-
     private void updateExpandButtons() {
         for (int i = 0; i < getChildCount(); i++) {
             View child = getChildAt(i);
