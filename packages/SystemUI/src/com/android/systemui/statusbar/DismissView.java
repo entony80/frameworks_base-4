@@ -27,7 +27,7 @@ import android.widget.TextView;
 
 import com.android.systemui.R;
 
-public class DismissView extends ExpandableView {
+public class DismissView extends StackScrollerDecorView {
 
     private Button mClearAllText;
     private boolean mIsVisible;
