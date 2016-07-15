@@ -27,7 +27,7 @@ import com.android.systemui.R;
 
 public class DismissView extends StackScrollerDecorView {
     private boolean mDismissAllInProgress;
-    private Button mDismissButton;
+    private DismissViewButton mDismissButton;
 
     public DismissView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -41,7 +41,7 @@ public class DismissView extends StackScrollerDecorView {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        mDismissButton = (Button) findContentView();
+        mDismissButton = (DismissViewButton) findContentView();
     }
 
     public void setOnButtonClickListener(OnClickListener listener) {
