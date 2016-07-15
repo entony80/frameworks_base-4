@@ -40,10 +40,12 @@ public class DismissView extends StackScrollerDecorView {
     public DismissView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
-	
-	@Override
-    protected View findContentView() {
-        return findViewById(R.id.dismiss_text);
+
+    @Override
+    protected void onFinishInflate() {
+        super.onFinishInflate();
+        mClearAllText = (Button) findViewById(R.id.dismiss_text);
+        setInvisible();
     }
 
     @Override
