@@ -164,11 +164,6 @@ public class QSDragPanel extends QSPanel implements View.OnDragListener, View.On
         updateDetailText();
         mDetail.setVisibility(GONE);
         mDetail.setClickable(true);
-		
-		mEditDetail = LayoutInflater.from(mContext).inflate(R.layout.qs_detail_int, this, false);
-		mDetailEditButton = (TextView) mDetail.findViewById(R.id.edit_button);
-		mEditDetail.setVisibility(VISIBLE);
-		mEditDetail.setClickable(true);
 
         mQsPanelTop = (QSPanelTopView) LayoutInflater.from(mContext).inflate(R.layout.qs_tile_top,
                 this, false);
@@ -201,15 +196,6 @@ public class QSDragPanel extends QSPanel implements View.OnDragListener, View.On
         mBrightnessController = new BrightnessController(getContext(),
                 (ImageView) mQsPanelTop.getBrightnessView().findViewById(R.id.brightness_icon),
                 (ToggleSlider) mQsPanelTop.getBrightnessView().findViewById(R.id.brightness_slider));
-				
-		mDetailEditButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                announceForAccessibility(
-                        mContext.getString(R.string.accessibility_desc_quick_settings));
-                openDetail();
-            }
-        });
 
         mDetailDoneButton.setOnClickListener(new OnClickListener() {
             @Override

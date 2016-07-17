@@ -20,8 +20,6 @@
          all of the currently visible notifications. [CHAR LIMIT=10]-->
     <string name="clear_recents">Close all recent</string>
 
-	<string name="quick_settings_edit">Edit</string>
-	
     <!-- Battery Saver Dimss -->
     <string name="battery_saver_dismiss_title">Dismiss</string>
     <string name="battery_saver_notification_action_text_short">Turn off</string>
