@@ -60,6 +60,7 @@ public class QSPanel extends ViewGroup {
     protected ViewGroup mDetailContent;
     protected TextView mDetailSettingsButton;
     protected TextView mDetailDoneButton;
+	protected TextView mDetailEditButton;
     protected View mBrightnessView;
     protected QSDetailClipper mClipper;
     private final H mHandler = new H();
@@ -114,6 +115,11 @@ public class QSPanel extends ViewGroup {
         addView(mFooter.getView());
         mClipper = new QSDetailClipper(mDetail);
         updateResources();
+		
+		mEditDetail = LayoutInflater.from(mContext).inflate(R.layout.qs_detail_int, this, false);
+		mDetailEditButton = (TextView) mDetail.findViewById(R.id.edit_button);
+		mEditDetail.setVisibility(VISIBLE);
+		mEditDetail.setClickable(true);
 
         boolean brightnessIconEnabled = Settings.System.getIntForUser(
             mContext.getContentResolver(), Settings.System.BRIGHTNESS_ICON,
@@ -122,6 +128,15 @@ public class QSPanel extends ViewGroup {
         mBrightnessController = new BrightnessController(getContext(),
                 (ImageView) findViewById(R.id.brightness_icon),
                 (ToggleSlider) findViewById(R.id.brightness_slider));
+				
+		mDetailEditButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                announceForAccessibility(
+                        mContext.getString(R.string.accessibility_desc_quick_settings));
+                openDetail();
+            }
+        });
 
         mDetailDoneButton.setOnClickListener(new OnClickListener() {
             @Override
@@ -163,6 +178,7 @@ public class QSPanel extends ViewGroup {
     }
 
     protected void updateDetailText() {
+		mDetailEditButton.setText(R.string.quick_settings_edit);
         mDetailDoneButton.setText(R.string.quick_settings_done);
         mDetailSettingsButton.setText(R.string.quick_settings_more_settings);
     }
@@ -214,6 +230,7 @@ public class QSPanel extends ViewGroup {
     @Override
     protected void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
+		FontSizeUtils.updateFontSize(mDetailEditButton, R.dimen.qs_detail_button_text_size);
         FontSizeUtils.updateFontSize(mDetailDoneButton, R.dimen.qs_detail_button_text_size);
         FontSizeUtils.updateFontSize(mDetailSettingsButton, R.dimen.qs_detail_button_text_size);
 
@@ -386,6 +403,10 @@ public class QSPanel extends ViewGroup {
         mRecords.add(r);
 
         addView(r.tileView);
+    }
+	
+	public void openDetail() {
+        showDetail(true, mDetailRecord);
     }
 
     public boolean isShowingDetail() {
