@@ -48,6 +48,8 @@
   <!-- label for current user in phone options dialog -->
   <string name="global_action_current_user">Corrente</string>
   <!-- Reboot menu -->
+  <!-- Button to soft reboot the device, within the Reboot Options dialog -->
+   <string name="reboot_systemui">Riavvia SystemUI</string>
   <!-- Button to reboot the phone, within the Reboot Options dialog -->
   <string name="reboot_reboot">Riavvia</string>
   <!-- Button to reboot the phone into recovery, within the Reboot Options dialog -->
