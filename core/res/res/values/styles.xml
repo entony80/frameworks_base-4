@@ -113,8 +113,8 @@ please see styles_device_defaults.xml.
 
     <!-- Standard animations for a non-full-screen window or activity. -->
     <style name="Animation.Dialog">
-        <item name="windowEnterAnimation">@anim/dialog_enter</item>
-        <item name="windowExitAnimation">@anim/dialog_exit</item>
+        <item name="windowEnterAnimation">@anim/submenu_enter</item>
+        <item name="windowExitAnimation">@anim/submenu_exit</item>
     </style>
 
     <!-- Standard animations for a translucent window or activity.  This
