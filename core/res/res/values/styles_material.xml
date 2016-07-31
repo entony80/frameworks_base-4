@@ -1093,8 +1093,8 @@ please see styles_device_defaults.xml.
     <style name="Animation.Material.Activity" parent="Animation.Activity"/>
 
     <style name="Animation.Material.Dialog">
-        <item name="windowEnterAnimation">@anim/fragment_open_enter</item>
-        <item name="windowExitAnimation">@anim/fragment_close_exit</item>
+        <item name="windowEnterAnimation">@anim/task_open_enter</item>
+        <item name="windowExitAnimation">@anim/task_close_exit</item>
     </style>
 
     <style name="Animation.Material.Popup">
