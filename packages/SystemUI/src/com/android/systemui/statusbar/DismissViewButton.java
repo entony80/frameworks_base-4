@@ -49,7 +49,7 @@ public class DismissViewButton extends Button {
             int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         mAnimatedDismissDrawable = (AnimatedVectorDrawable) getContext().getDrawable(
-                R.drawable.dismiss_all_shape).mutate();
+                R.drawable.dismiss_all_shape_animation).mutate();
         mAnimatedDismissDrawable.setCallback(this);
         mAnimatedDismissDrawable.setBounds(0,
                 0,
