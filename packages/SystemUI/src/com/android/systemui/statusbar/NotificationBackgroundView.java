@@ -40,6 +40,7 @@ public class NotificationBackgroundView extends View {
     private int mClipTopAmount;
     private int mActualHeight;
     private int mNotificationsAlpha;
+    private SettingsObserver mSettingsObserver;
     private static int mTranslucencyPercentage;
     private static boolean mTranslucentNotifications;
 

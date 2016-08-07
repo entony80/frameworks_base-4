@@ -5955,12 +5955,14 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
     }
 
     public void setBackgroundBitmap(Bitmap bmp) {
-        if (bmp == null && mBlurredImage == null) return;
-
-        if (bmp != null && mBlurRadius != 0) {
-            mBlurredImage = Blur.blurBitmap(mContext, bmp, mBlurRadius);
+        if (bmp != null) {
+            if (mBlurLockRadius != 0) {
+                mBlurredImage = blurBitmap(bmp,mBlurLockRadius);
+            } else {
+                mBlurredImage = bmp;
+            }
         } else {
-            mBlurredImage = bmp;
+            mBlurredImage = null;
         }
 
         mHandler.post(new Runnable() {
