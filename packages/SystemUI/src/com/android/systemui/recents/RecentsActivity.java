@@ -24,6 +24,8 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProviderInfo;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.ContentResolver;
+import android.database.ContentObserver;
 import android.graphics.*;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -31,6 +33,7 @@ import android.os.AsyncTask;
 import android.content.Intent;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.AttributeSet;
 import android.widget.FrameLayout;
 import android.content.IntentFilter;
 import android.content.res.Resources;
@@ -39,10 +42,14 @@ import android.graphics.drawable.Drawable;
 import com.android.systemui.statusbar.BlurUtils;
 import com.android.systemui.statusbar.DisplayUtils;
 import com.android.systemui.statusbar.phone.NotificationPanelView;
+import com.android.systemui.cm.UserContentObserver;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.os.UserHandle;
 import android.provider.Settings;
+import android.view.Gravity;
+import android.os.Handler;
+import android.net.Uri;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewStub;
@@ -80,7 +87,10 @@ public class RecentsActivity extends Activity implements RecentsView.RecentsView
         RecentsAppWidgetHost.RecentsAppWidgetHostCallbacks,
         DebugOverlayView.DebugOverlayViewCallbacks {
 
+<<<<<<< HEAD
 	private static final HashMap<String, Field> fieldCache = new HashMap<String, Field>();
+=======
+>>>>>>> 172c2aa... [SQUASHED] Blur: Major update (1/2)
     RecentsConfiguration mConfig;
     long mLastTabKeyEventTime;
 
@@ -93,17 +103,6 @@ public class RecentsActivity extends Activity implements RecentsView.RecentsView
     DebugOverlayView mDebugOverlay;
 	
 	public static boolean mBlurredRecentAppsEnabled;
-
-    private static int mBlurScale;
-    private static int mBlurRadius;
-    private static Context mContext;
-    private static BlurUtils mBlurUtils;
-    private static ColorFilter mColorFilter;
-    private static int mBlurDarkColorFilter;
-    private static int mBlurMixedColorFilter;
-    private static int mBlurLightColorFilter;
-    private static RecentsActivity mRecentsActivity;
-    private static FrameLayout mRecentsActivityRootView;
 
     // Resize task debug
     RecentsResizeTaskDialog mResizeTaskDebugDialog;
@@ -118,6 +117,7 @@ public class RecentsActivity extends Activity implements RecentsView.RecentsView
 
     // Runnable to be executed after we paused ourselves
     Runnable mAfterPauseRunnable;
+<<<<<<< HEAD
 	
 	public static void startBlurTask() {
 
@@ -291,6 +291,9 @@ public class RecentsActivity extends Activity implements RecentsView.RecentsView
         }
     }
 
+=======
+    static RecentsTaskLoadPlan plan;
+>>>>>>> 172c2aa... [SQUASHED] Blur: Major update (1/2)
     private ReferenceCountedTrigger mExitTrigger;
 
     /**
@@ -401,22 +404,6 @@ public class RecentsActivity extends Activity implements RecentsView.RecentsView
             onDebugModeTriggered();
         }
     });
-	
-	private static void recycle() {
-
-        if (mRecentsActivityRootView == null)
-            return;
-
-        if (mRecentsActivityRootView.getBackground() != null) {
-            Bitmap bitmap = ((BitmapDrawable) mRecentsActivityRootView.getBackground()).getBitmap();
-            
-            if (bitmap != null) {
-                bitmap.recycle();
-                bitmap = null;
-            }
-            mRecentsActivityRootView.setBackground(null);
-        }
-	}
 
     /** Updates the set of recent tasks */
     void updateRecentsTasks() {
@@ -646,79 +633,6 @@ public class RecentsActivity extends Activity implements RecentsView.RecentsView
         filter.addAction(Intent.ACTION_SCREEN_OFF);
         filter.addAction(SearchManager.INTENT_GLOBAL_SEARCH_ACTIVITY_CHANGED);
         registerReceiver(mSystemBroadcastReceiver, filter);
-		
-		try {
-            RecentsView mRecentsView = (RecentsView) getObjectField(this, "mRecentsView");
-            
-            mRecentsActivityRootView = (FrameLayout) mRecentsView.getParent();
-
-            Bitmap lastBlurredBitmap = BlurTask.getLastBlurredBitmap();
-
-            if ((mBlurredRecentAppsEnabled) && (lastBlurredBitmap != null)) {
-                
-                BitmapDrawable blurredDrawable = new BitmapDrawable(lastBlurredBitmap);
-                blurredDrawable.setColorFilter(mColorFilter);
-                mRecentsActivityRootView.setBackground(blurredDrawable);
-            }
-        } catch (Exception e){
-        }
-    }
-
-    //#################################################################################################
-    public static Object getObjectField(Object obj, String fieldName) {
-        try {
-            return findField(obj.getClass(), fieldName).get(obj);
-        } catch (IllegalAccessException e) {
-            throw new IllegalAccessError(e.getMessage());
-        } catch (IllegalArgumentException e) {
-            throw e;
-        }
-    }
-
-
-    /**
-     * Look up a field in a class and set it to accessible. The result is cached.
-     * If the field was not found, a {@link NoSuchFieldError} will be thrown.
-     */
-    public static Field findField(Class<?> clazz, String fieldName) {
-        StringBuilder sb = new StringBuilder(clazz.getName());
-        sb.append('#');
-        sb.append(fieldName);
-        String fullFieldName = sb.toString();
-
-        if (fieldCache.containsKey(fullFieldName)) {
-            Field field = fieldCache.get(fullFieldName);
-            if (field == null)
-                throw new NoSuchFieldError(fullFieldName);
-            return field;
-        }
-
-        try {
-            Field field = findFieldRecursiveImpl(clazz, fieldName);
-            field.setAccessible(true);
-            fieldCache.put(fullFieldName, field);
-            return field;
-        } catch (NoSuchFieldException e) {
-            fieldCache.put(fullFieldName, null);
-            throw new NoSuchFieldError(fullFieldName);
-        }
-    }
-
-    private static Field findFieldRecursiveImpl(Class<?> clazz, String fieldName) throws NoSuchFieldException {
-        try {
-            return clazz.getDeclaredField(fieldName);
-        } catch (NoSuchFieldException e) {
-            while (true) {
-                clazz = clazz.getSuperclass();
-                if (clazz == null || clazz.equals(Object.class))
-                    break;
-
-                try {
-                    return clazz.getDeclaredField(fieldName);
-                } catch (NoSuchFieldException ignored) {}
-            }
-            throw e;
-        }
     }
 
     /** Inflates the debug overlay if debug mode is enabled. */
@@ -1043,20 +957,5 @@ public class RecentsActivity extends Activity implements RecentsView.RecentsView
     @Override
     public void onSecondarySeekBarChanged(float progress) {
         // Do nothing
-    }
-	
-	public static void init(Context context) {
-
-        mContext = context;
-        mBlurUtils = new BlurUtils(mContext);
-    }
-
-    public static void updatePreferences(Context mContext) {
-        mBlurScale = 20;
-        mBlurRadius = 3;
-        mBlurDarkColorFilter = Color.LTGRAY;
-        mBlurMixedColorFilter = Color.GRAY;
-        mBlurLightColorFilter = Color.DKGRAY;
-        mBlurredRecentAppsEnabled = (Settings.System.getInt(mContext.getContentResolver(), Settings.System.RECENT_APPS_ENABLED_PREFERENCE_KEY, 1) == 1);
     }
 }
