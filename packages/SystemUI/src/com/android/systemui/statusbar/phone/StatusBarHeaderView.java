@@ -1327,6 +1327,7 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
 
             mQSHeaderAlpha = Settings.System.getInt(
                     resolver, Settings.System.QS_TRANSPARENT_HEADER, 255);
+            setQSHeaderAlpha();
 
             mStatusBarHeaderFontStyle = Settings.System.getIntForUser(resolver,
                 Settings.System.STATUS_BAR_HEADER_FONT_STYLE, FONT_NORMAL,
@@ -1346,13 +1347,11 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
             mTranslucencyPercentage = Settings.System.getInt(mContext.getContentResolver(),
                      Settings.System.TRANSLUCENT_HEADER_PRECENTAGE_PREFERENCE_KEY, 70);
 
-			if(mTranslucentHeader) {
-               mTranslucencyPercentage = 255 - ((mTranslucencyPercentage * 255) / 100);
-               handleStatusBarHeaderViewBackround();
-               updateEverything();
-               updateVisibilities();
-               requestCaptureValues();
-			}
+            mTranslucencyPercentage = 255 - ((mTranslucencyPercentage * 255) / 100);
+            handleStatusBarHeaderViewBackround();
+            updateEverything();
+            updateVisibilities();
+            requestCaptureValues();
         }
     }
 
@@ -1454,6 +1453,18 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
         mWeatherLine1.setShadowLayer(0, 0, 0, Color.BLACK);
         mWeatherLine2.setShadowLayer(0, 0, 0, Color.BLACK);
         mEditTileDoneText.setShadowLayer(0, 0, 0, Color.BLACK);
+    }
+
+    private void setQSHeaderAlpha() {
+        if (Settings.System.getInt(mContext.getContentResolver(),
+                    Settings.System.QS_TRANSPARENT_HEADER, 255) != 255) {
+            if (mHeaderView != null) {
+                 mHeaderView.getBackground().setAlpha(mQSHeaderAlpha);
+            }
+            if (mBackgroundImage != null) {
+                mBackgroundImage.setAlpha(mQSHeaderAlpha);
+            }
+        }
     }
 
     private void setStatusBarHeaderFontStyle(int font) {

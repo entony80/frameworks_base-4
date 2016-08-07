@@ -57,17 +57,9 @@ public class NotificationBackgroundView extends View {
     private void draw(Canvas canvas, Drawable drawable) {
         if (drawable != null && mActualHeight > mClipTopAmount) {
             drawable.setBounds(0, mClipTopAmount, getWidth(), mActualHeight);
-        if (mTranslucentNotifications) {
-       	    setblur(canvas,drawable);
-    	} else {
-    	    drawable.setAlpha(mNotificationsAlpha);
-     	}
-     	    drawable.draw(canvas);
-        }	
-    }
-  
-   public void setblur(Canvas canvas, Drawable drawable) {
-    if (mTranslucentNotifications) {
+            drawable.setAlpha(mNotificationsAlpha);
+
+            if (mTranslucentNotifications) {
                 if (drawable.getAlpha() != mTranslucencyPercentage)
                     drawable.setAlpha(mTranslucencyPercentage);
                 if (NotificationPanelView.mKeyguardShowing) {
@@ -78,6 +70,8 @@ public class NotificationBackgroundView extends View {
                 }
             } else {
                 drawable.setAlpha(255);
+            }
+            drawable.draw(canvas);
         }
     }
 
@@ -144,9 +138,7 @@ public class NotificationBackgroundView extends View {
             mTranslucencyPercentage = Settings.System.getInt(mContext.getContentResolver(),
                     Settings.System.TRANSLUCENT_NOTIFICATIONS_PRECENTAGE_PREFERENCE_KEY, 70);
             
-	        if(mTranslucentNotifications) { 
-               mTranslucencyPercentage = 255 - ((mTranslucencyPercentage * 255) / 100);
-			}
+            mTranslucencyPercentage = 255 - ((mTranslucencyPercentage * 255) / 100);
         }
     }
 

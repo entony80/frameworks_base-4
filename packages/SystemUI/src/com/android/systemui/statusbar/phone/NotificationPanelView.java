@@ -3196,15 +3196,11 @@ public class NotificationPanelView extends PanelView implements
             mTranslucencyPercentage = Settings.System.getInt(mContext.getContentResolver(),
                     Settings.System.TRANSLUCENT_QUICK_SETTINGS_PRECENTAGE_PREFERENCE_KEY, 60);
 
-			if (mTranslucentQuickSettings || mBlurredStatusBarExpandedEnabled) {
-                mBlurDarkColorFilter = Color.LTGRAY;
-                mBlurMixedColorFilter = Color.GRAY;
-                mBlurLightColorFilter = Color.DKGRAY;
-                mTranslucencyPercentage = 255 - ((mTranslucencyPercentage * 255) / 100);
-                handleQuickSettingsBackround();
-			} else { 
-        	    setQSBackgroundAlpha();
-     	    }
+            mBlurDarkColorFilter = Color.LTGRAY;
+            mBlurMixedColorFilter = Color.GRAY;
+            mBlurLightColorFilter = Color.DKGRAY;
+            mTranslucencyPercentage = 255 - ((mTranslucencyPercentage * 255) / 100);
+            handleQuickSettingsBackround();
         }
     }
 
