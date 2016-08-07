@@ -3481,6 +3481,66 @@ public final class Settings {
         /** @hide */
         public static final Validator POINTER_SPEED_VALIDATOR =
                 new InclusiveFloatRangeValidator(-7, 7);
+   
+        /**
+         * XOSP Blur personalization settings
+         * @hide
+         */
+        public static final String STATUS_BAR_EXPANDED_ENABLED_PREFERENCE_KEY = "blurred_status_bar_expanded_enabled_pref";
+
+        /**
+         * XOSP Blur personalization settings
+         * @hide
+         */
+        public static final String BLUR_SCALE_PREFERENCE_KEY = "blurred_expanded_panel_scale_pref";
+
+        /**
+         * XOSP Blur personalization settings
+         * @hide
+         */
+        public static final String BLUR_RADIUS_PREFERENCE_KEY = "blurred_expanded_panel_radius_pref";
+
+        /**
+         * XOSP Blur personalization settings
+         * @hide
+         */
+  
+        public static final String TRANSLUCENT_NOTIFICATIONS_PRECENTAGE_PREFERENCE_KEY = "translucent_notifications_percentage_pref";
+
+        /**
+         * XOSP Blur personalization settings
+         * @hide
+         */
+
+        public static final String TRANSLUCENT_QUICK_SETTINGS_PRECENTAGE_PREFERENCE_KEY = "translucent_quick_settings_percentage_pref";
+
+        /**
+         * XOSP Blur personalization settings
+         * @hide
+         */
+
+        public static final String TRANSLUCENT_HEADER_PRECENTAGE_PREFERENCE_KEY = "translucent_header_percentage_pref";
+
+        /**
+         * XOSP Blur personalization settings
+         * @hide
+         */
+
+        public static final String TRANSLUCENT_HEADER_PREFERENCE_KEY = "translucent_header_pref";
+
+        /**
+         * XOSP Blur personalization settings
+         * @hide
+         */
+   
+        public static final String TRANSLUCENT_QUICK_SETTINGS_PREFERENCE_KEY = "translucent_quick_settings_pref";
+
+        /**
+         * XOSP Blur personalization settings
+         * @hide
+         */
+   
+        public static final String TRANSLUCENT_NOTIFICATIONS_PREFERENCE_KEY = "translucent_notifications_pref";
 
         /**
          * Show icon when stylus is used?
@@ -7628,6 +7688,12 @@ public final class Settings {
         public static final String STATUS_BAR_LOCKED_ON_SECURE_KEYGUARD = "status_bar_locked_on_secure_keyguard";
 
         /**
+         * HALO color, default is 0xffbbbbbb (normal)
+         * @hide
+         */
+        public static final String HALO_COLOR = "halo_color";
+
+        /**
          * @hide
          */
         public static final String NAVIGATION_BAR_HEIGHT_LANDSCAPE = "navigation_bar_height_landscape";
@@ -7794,6 +7860,55 @@ public final class Settings {
          * @hide
          */
         public static final String FLING_LONGSWIPE_THRESHOLD_DOWN_LAND = "fling_longswipe_threshold_down_land";
+
+       /**
+        * HALO, should default to 0 (no, do not show)
+        * @hide
+        */
+       public static final String HALO_ACTIVE = "halo_active";
+
+       /**
+        * HALO hide?, should default to 0 (no, do not hide)
+        * @hide
+        */
+       public static final String HALO_HIDE = "halo_hide";
+
+       /**
+        * HALO pause activities?, defaults to 0 (no, do not pause) on devices which isLargeRAM() == true
+        * otherwise it defaults to 1 (yes, do pause)
+        * @hide
+        */
+       public static final String HALO_PAUSE = "halo_pause";
+
+       /**
+        * HALO size fraction, default is 1.0f (normal)
+        * @hide
+        */
+       public static final String HALO_SIZE = "halo_size";
+
+       /**
+        * HALO message box?, should default to 1 (yes, show message box on incoming notification)
+        * @hide
+        */
+       public static final String HALO_MSGBOX = "halo_msgbox";
+
+       /**
+        * HALO notificatoin count?, should default to 4 (both)
+        * @hide
+        */
+       public static final String HALO_NOTIFY_COUNT = "halo_notify_count";
+
+       /**
+        * HALO message box animation?, should default to 2 (flip animation)
+        * @hide
+        */
+       public static final String HALO_MSGBOX_ANIMATION = "halo_msgbox_animation";
+
+       /**
+        * HALO unlock ping?, should default to 0 (no, do not ping on unlock)
+        * @hide
+        */
+       public static final String HALO_UNLOCK_PING = "halo_unlock_ping";
 
         /**
          * This are the settings to be backed up.

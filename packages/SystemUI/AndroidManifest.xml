@@ -172,6 +172,9 @@
     <!-- Images in navbar -->
     <uses-permission android:name="android.permission.MANAGE_DOCUMENTS" />
 
+    <!-- Halo -->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+
     <application
         android:name=".SystemUIApplication"
         android:persistent="true"
@@ -246,7 +249,7 @@
                   android:excludeFromRecents="true"
                   android:stateNotNeeded="true"
                   android:resumeWhilePausing="true"
-                  android:screenOrientation="behind"
+                  android:screenOrientation="fullUser"
                   android:theme="@style/config_recents_activity_theme">
             <intent-filter>
                 <action android:name="com.android.systemui.recents.TOGGLE_RECENTS" />

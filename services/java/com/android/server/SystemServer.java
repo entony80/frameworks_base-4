@@ -623,6 +623,7 @@ public final class SystemServer {
 
         try {
             ActivityManagerNative.getDefault().showBootMessage(
+                    context.getApplicationInfo(),
                     context.getResources().getText(
                             com.android.internal.R.string.android_upgrading_starting_apps),
                     false);
