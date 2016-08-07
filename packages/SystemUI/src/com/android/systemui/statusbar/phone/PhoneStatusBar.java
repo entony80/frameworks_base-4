@@ -726,6 +726,12 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                             Settings.System.TRANSLUCENT_HEADER_PREFERENCE_KEY,
                             0, UserHandle.USER_CURRENT) == 1;
                     DontStressOnRecreate();
+			} else if (uri.equals(Settings.System.getUriFor(
+                    Settings.System.TRANSLUCENT_QUICK_SETTINGS_PREFERENCE_KEY))) {
+                    DontStressOnRecreate();
+            }  else if (uri.equals(Settings.System.getUriFor(
+                    Settings.System.STATUS_BAR_EXPANDED_ENABLED_PREFERENCE_KEY))) {
+                    DontStressOnRecreate();
             }
             update();
         }
@@ -5957,11 +5963,11 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
     public void setBackgroundBitmap(Bitmap bmp) {
         if (bmp == null && mBlurredImage == null) return;
 
-        if (bmp != null && mBlurRadius != 0) {
-            mBlurredImage = Blur.blurBitmap(mContext, bmp, mBlurRadius);
+        if (bmp != null && mBlurLockRadius != 0) {
+            mBlurredImage = Blur.blurBitmap(mContext, bmp, mBlurLockRadius);
         } else {
             mBlurredImage = bmp;
-        }
+		}
 
         mHandler.post(new Runnable() {
             @Override
