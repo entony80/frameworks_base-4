@@ -27,6 +27,7 @@ import android.app.ActivityManager;
 import android.app.ActivityManagerNative;
 import android.app.IActivityManager;
 import android.app.Notification;
+import android.hardware.display.DisplayManager;
 import android.app.PendingIntent;
 import android.app.StatusBarManager;
 import android.app.WallpaperManager;
@@ -127,6 +128,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+import com.android.systemui.recents.RecentsActivity;
 import com.android.internal.logging.MetricsLogger;
 import com.android.internal.statusbar.NotificationVisibility;
 import com.android.internal.statusbar.IStatusBarService;
@@ -216,6 +219,7 @@ import com.android.systemui.statusbar.policy.ZenModeController;
 import com.android.systemui.statusbar.stack.NotificationStackScrollLayout;
 import com.android.systemui.statusbar.stack.NotificationStackScrollLayout.OnChildLocationsChangedListener;
 import com.android.systemui.statusbar.stack.StackStateAnimator;
+import com.android.systemui.statusbar.NotificationBackgroundView;
 import com.android.systemui.statusbar.stack.StackViewState;
 import com.android.systemui.volume.VolumeComponent;
 import cyanogenmod.app.CMContextConstants;
@@ -1806,10 +1810,53 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
         // Private API call to make the shadows look better for Recents
         ThreadedRenderer.overrideProperty("ambientRatio", String.valueOf(1.5f));
 
+        try {
+            BroadcastReceiver receiver = new BroadcastReceiver() {
+
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    if (NotificationPanelView.mKeyguardShowing) {
+                        return;
+                    }
+                    String action = intent.getAction();
+
+               if (action.equals(Intent.ACTION_CONFIGURATION_CHANGED)) {
+                        if (NotificationPanelView.mKeyguardShowing) {
+                            return;
+                        }
+                        RecentsActivity.onConfigurationChanged();
+
+                        if (mExpandedVisible && NotificationPanelView.mBlurredStatusBarExpandedEnabled && (!NotificationPanelView.mKeyguardShowing)) {
+                            makeExpandedInvisible();
+                        }
+                    }
+                }
+            };
+
+            IntentFilter intent = new IntentFilter();
+            intent.addAction(Intent.ACTION_CONFIGURATION_CHANGED);
+            this.mContext.registerReceiver(receiver, intent);
+
+            RecentsActivity.init(this.mContext);
+
+            updatePreferences(this.mContext);
+        } catch (Exception e){
+            Log.d("mango918", String.valueOf(e));
+        }
+
+        mStatusBarHeaderMachine = new StatusBarHeaderMachine(mContext);
         mStatusBarHeaderMachine.addObserver(mHeader);
         mStatusBarHeaderMachine.updateResources(mContext.getResources(), StatusBarHeaderMachine.STATUSBAR_RESOURCES);
         mStatusBarHeaderMachine.forceUpdate();
         return mStatusBarView;
+    }
+
+    public static void updatePreferences(Context context) {
+        NotificationPanelView.updatePreferences(context);
+        RecentsActivity.updatePreferences(context);
+        NotificationBackgroundView.updatePreferences(context);
+        StatusBarHeaderView.updatePreferences(context);
+        BaseStatusBar.updatePreferences();
     }
 
     private void clearAllNotifications() {
@@ -3085,6 +3132,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
     }
 
     void makeExpandedVisible(boolean force) {
+        NotificationPanelView.startBlurTask();
         if (SPEW) Log.d(TAG, "Make expanded visible: expanded visible=" + mExpandedVisible);
         if (!force && (mExpandedVisible || !panelsEnabled())) {
             return;
@@ -3247,6 +3295,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
         if (!mStatusBarKeyguardViewManager.isShowing()) {
             WindowManagerGlobal.getInstance().trimMemory(ComponentCallbacks2.TRIM_MEMORY_UI_HIDDEN);
         }
+        NotificationPanelView.recycle();
     }
 
     private void adjustBrightness(int x) {
@@ -4027,6 +4076,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             else if (Intent.ACTION_SCREEN_ON.equals(action)) {
                 mScreenOn = true;
                 notifyNavigationBarScreenOn(true);
+                NotificationPanelView.recycle();
             } else if (Intent.ACTION_KEYGUARD_WALLPAPER_CHANGED.equals(action)) {
                 WallpaperManager wm = (WallpaperManager) mContext.getSystemService(
                         Context.WALLPAPER_SERVICE);
