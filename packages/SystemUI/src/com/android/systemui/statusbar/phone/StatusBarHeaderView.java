@@ -1346,11 +1346,13 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
             mTranslucencyPercentage = Settings.System.getInt(mContext.getContentResolver(),
                      Settings.System.TRANSLUCENT_HEADER_PRECENTAGE_PREFERENCE_KEY, 70);
 
-            mTranslucencyPercentage = 255 - ((mTranslucencyPercentage * 255) / 100);
-            handleStatusBarHeaderViewBackround();
-            updateEverything();
-            updateVisibilities();
-            requestCaptureValues();
+			if(mTranslucentHeader) {
+               mTranslucencyPercentage = 255 - ((mTranslucencyPercentage * 255) / 100);
+               handleStatusBarHeaderViewBackround();
+               updateEverything();
+               updateVisibilities();
+               requestCaptureValues();
+			}
         }
     }
 
