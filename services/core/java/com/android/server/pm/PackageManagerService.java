@@ -6513,18 +6513,24 @@ public class PackageManagerService extends IPackageManager.Stub {
         if (DEBUG_DEXOPT) {
             Log.i(TAG, "Optimizing app " + curr + " of " + total + ": " + pkg.packageName);
         }
-        // give the packagename to the PhoneWindowManager
-        ApplicationInfo ai;
+
         try {
-            ai = mContext.getPackageManager().getApplicationInfo(pkg.packageName, 0);
-        } catch (Exception e) {
-            ai = null;
+           // give the packagename to the PhoneWindowManager
+           ApplicationInfo ai;
+           try {
+              ai = mContext.getPackageManager().getApplicationInfo(pkg.packageName, 0);
+           }
+           catch (Exception e) {
+              ai = null;
+           }
+
+           mPolicy.setPackageName((String) (ai != null ? mContext.getPackageManager().getApplicationLabel(ai) : pkg.packageName));
+
+           ActivityManagerNative.getDefault().showBootMessage(pkg.applicationInfo, curr, total, true);
         }
-        mPolicy.setPackageName((String) (ai != null ? mContext.getPackageManager().getApplicationLabel(ai) : pkg.packageName));
-        try {
-            ActivityManagerNative.getDefault().showBootMessage(pkg.applicationInfo,
-                } catch (RemoteException e) {
+        catch (RemoteException e) {
         }
+
         PackageParser.Package p = pkg;
         synchronized (mInstallLock) {
             mPackageDexOptimizer.performDexOpt(p, null /* instruction sets */,
