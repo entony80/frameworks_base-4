@@ -575,12 +575,19 @@ final class DefaultPermissionGrantPolicy {
                 grantRuntimePermissionsLPw(musicPackage, STORAGE_PERMISSIONS, userId);
             }
 
-            // DU ALLOWED PERMISSIONS
+            // Browser
             PackageParser.Package chromiumPackage = getDefaultProviderAuthorityPackageLPr(
                     "org.chromium.chrome", userId);
             if (chromiumPackage != null) {
                 grantRuntimePermissionsLPw(chromiumPackage, CONTACTS_PERMISSIONS, userId);
 
+            }
+
+            // CypherOTA
+            PackageParser.Package cypherOTAPackage = getDefaultProviderAuthorityPackageLPr(
+                    "com.cypher.cota", userId);
+            if (cypherOTAPackage != null) {
+                grantRuntimePermissionsLPw(cypherOTAPackage, STORAGE_PERMISSIONS, userId);
             }
 
             // Google Account
