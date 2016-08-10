@@ -4840,12 +4840,6 @@ public final class Settings {
         public static final String HIDE_FROM_RECENTS_LIST = "hide_from_recents_list";
 
         /**
-         * Settings Dash Font Style
-         * @hide
-         */
-        public static final String DASHBOARD_FONT_STYLE = "dashboard_font_style";
-
-        /**
          * Whether to use gesture anywhere feature.
          * @hide
          */
