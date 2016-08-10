@@ -113,6 +113,7 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
     private SettingsButton mSettingsButton;
     private View mSettingsContainer;
     private View mHaloButton;
+	private boolean mShowhaloButton;
     private View mQsDetailHeader;
     private TextView mQsDetailHeaderTitle;
     private Switch mQsDetailHeaderSwitch;
@@ -133,8 +134,6 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
 
     private int mMultiUserExpandedMargin;
     private int mMultiUserCollapsedMargin;
-	
-	private SettingsObserver mSettingsObserver;
 
     private int mClockMarginBottomExpanded;
     private int mClockMarginBottomCollapsed;
@@ -143,9 +142,6 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
 
     private int mClockCollapsedSize;
     private int mClockExpandedSize;
-    private static boolean mTranslucentHeader;
-    private static int mTranslucencyPercentage;
-    private static StatusBarHeaderView mStatusBarHeaderView;
 
     protected Vibrator mVibrator;
 
@@ -176,6 +172,7 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
     private float mCurrentT;
     private boolean mShowingDetail;
     private boolean mDetailTransitioning;
+    private SettingsObserver mSettingsObserver;
     private boolean mShowWeather;
     private boolean mShowBatteryTextExpanded;
 
@@ -187,9 +184,6 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
     private float mLastHeight;
 
     private UserInfoController mUserInfoController;
-
-    // QS header alpha
-    private int mQSHeaderAlpha;
 
     private int headerShadow;
     private int customHeader;
@@ -280,7 +274,6 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
         updateVisibilities();
         updateClockScale();
         updateAvatarScale();
-        setQSHeaderAlpha();
         setStatusBarHeaderFontStyle(mStatusBarHeaderFontStyle);
         addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
             @Override
@@ -321,25 +314,6 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
         d = mHaloButton.getBackground();
         if (d instanceof RippleDrawable) {
             ((RippleDrawable) d).setForceSoftware(true);
-        }
-
-        mStatusBarHeaderView = this;
-        handleStatusBarHeaderViewBackround();
-    }
-
-    public static void handleStatusBarHeaderViewBackround() {
-
-        if (NotificationPanelView.mNotificationPanelView == null)
-            return;
-
-        boolean mKeyguardShowing = NotificationPanelView.mKeyguardShowing;
-
-        if (mStatusBarHeaderView == null)
-            return;
-        if (mKeyguardShowing) {
-            mStatusBarHeaderView.getBackground().setAlpha(255);
-        } else {
-            mStatusBarHeaderView.getBackground().setAlpha(mTranslucentHeader ? mTranslucencyPercentage : 255);
         }
     }
 
@@ -545,7 +519,7 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
         mAlarmStatus.setVisibility(mExpanded && mAlarmShowing ? View.VISIBLE : View.INVISIBLE);
         mSettingsContainer.setVisibility(mExpanded ? View.VISIBLE : View.INVISIBLE);
         mWeatherContainer.setVisibility(mExpanded && mShowWeather ? View.VISIBLE : View.GONE);
-        mHaloButton.setVisibility(mExpanded ? View.VISIBLE : View.INVISIBLE);
+        mHaloButton.setVisibility(mExpanded && mShowhaloButton ? View.VISIBLE : mShowhaloButton ? View.INVISIBLE : View.GONE);
         mQsDetailHeader.setVisibility(mExpanded && mShowingDetail ? View.VISIBLE : View.INVISIBLE);
         mTaskManagerButton.setVisibility(mExpanded && mShowTaskManager ? View.VISIBLE : View.GONE);
         mQsDetailHeader.setVisibility(mExpanded && mShowingDetail ? View.VISIBLE : View.GONE);
@@ -939,7 +913,8 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
         target.taskManagerAlpha = getAlphaForVisibility(mTaskManagerButton);
         target.taskManagerTranslation = mExpanded
                 ? 0
-                : mHaloButton.getLeft() - mTaskManagerButton.getLeft();
+                : (mShowhaloButton ? mHaloButton.getLeft()
+                : mSettingsContainer.getLeft()) - mTaskManagerButton.getLeft();
         target.signalClusterAlpha = mSignalClusterDetached ? 0f : 1f;
         target.settingsRotation = !mExpanded ? 90f : 0f;
     }
@@ -1069,6 +1044,7 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
         }
         mQsPanelCallback.onShowingDetail(mEditing ? mEditingDetailAdapter : null);
         updateEverything();
+    }
 
     /**
      * Captures all layout values (position, visibility) for a certain state. This is used for
@@ -1280,17 +1256,11 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
             resolver.registerContentObserver(CMSettings.System.getUriFor(
                     CMSettings.System.STATUS_BAR_SHOW_BATTERY_PERCENT), false, this, UserHandle.USER_ALL);
             resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.QS_TRANSPARENT_HEADER), false, this, UserHandle.USER_ALL);
-            resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.STATUS_BAR_HEADER_FONT_STYLE), false, this, UserHandle.USER_ALL);
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.STATUS_BAR_CUSTOM_HEADER_SHADOW), false, this, UserHandle.USER_ALL);
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.STATUS_BAR_CUSTOM_HEADER), false, this, UserHandle.USER_ALL);
-			resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.TRANSLUCENT_HEADER_PREFERENCE_KEY), false, this, UserHandle.USER_ALL);
-            resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.TRANSLUCENT_HEADER_PRECENTAGE_PREFERENCE_KEY), false, this, UserHandle.USER_ALL);
             update();
         }
 
@@ -1325,34 +1295,24 @@ public class StatusBarHeaderView extends RelativeLayout implements View.OnClickL
             mShowWeather = CMSettings.System.getInt(
                     resolver, CMSettings.System.STATUS_BAR_SHOW_WEATHER, 1) == 1;
 
-            mQSHeaderAlpha = Settings.System.getInt(
-                    resolver, Settings.System.QS_TRANSPARENT_HEADER, 255);
-
             mStatusBarHeaderFontStyle = Settings.System.getIntForUser(resolver,
                 Settings.System.STATUS_BAR_HEADER_FONT_STYLE, FONT_NORMAL,
                 UserHandle.USER_CURRENT);
             setStatusBarHeaderFontStyle(mStatusBarHeaderFontStyle);
 
-            headerShadow = Settings.System.getIntForUser(mContext.getContentResolver(),
+            headerShadow = Settings.System.getIntForUser(resolver,
                     Settings.System.STATUS_BAR_CUSTOM_HEADER_SHADOW, 0,
                     UserHandle.USER_CURRENT);
 
-            customHeader = Settings.System.getIntForUser(mContext.getContentResolver(),
+            customHeader = Settings.System.getIntForUser(resolver,
                     Settings.System.STATUS_BAR_CUSTOM_HEADER, 0,
                     UserHandle.USER_CURRENT);
-			
-			mTranslucentHeader = Settings.System.getIntForUser(resolver,
-                    Settings.System.TRANSLUCENT_HEADER_PREFERENCE_KEY, 0, currentUserId) == 1;
-            mTranslucencyPercentage = Settings.System.getInt(mContext.getContentResolver(),
-                     Settings.System.TRANSLUCENT_HEADER_PRECENTAGE_PREFERENCE_KEY, 70);
+					
+			mShowhaloButton = Settings.Secure.getInt(resolver,
+                    Settings.Secure.HALO_ENABLE, 0) == 1 ;
 
-			if(mTranslucentHeader) {
-               mTranslucencyPercentage = 255 - ((mTranslucencyPercentage * 255) / 100);
-               handleStatusBarHeaderViewBackround();
-               updateEverything();
-               updateVisibilities();
-               requestCaptureValues();
-			}
+            updateVisibilities();
+            requestCaptureValues();
         }
     }
 
