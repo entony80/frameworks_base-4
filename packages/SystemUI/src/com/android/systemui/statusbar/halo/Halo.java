@@ -168,6 +168,7 @@ public class Halo extends FrameLayout implements Ticker.TickerCallback {
     private boolean mAttached = false;
     private boolean mHapticFeedback;
     private boolean mHaloHide;
+    private boolean mHaloFloatNotifications = false;
     private boolean mFirstStart = true;
     private boolean mInitialized = false;
     private boolean mTickerLeft = true;
@@ -190,8 +191,6 @@ public class Halo extends FrameLayout implements Ticker.TickerCallback {
     private float initialY = 0;
     private float mHaloSize = 1.0f;
 
-    private int mHaloColor = 0xffbbbbbb;
-
     // Halo dock position
     SharedPreferences preferences;
     private String KEY_HALO_POSITION_Y = "halo_position_y";
@@ -211,13 +210,17 @@ public class Halo extends FrameLayout implements Ticker.TickerCallback {
                     Settings.Secure.HALO_NOTIFY_COUNT), false, this);
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.HAPTIC_FEEDBACK_ENABLED), false, this);
+            resolver.registerContentObserver(Settings.Secure.getUriFor(
+                    Settings.Secure.HALO_FLOAT_NOTIFICATIONS), false, this);
         }
 
         @Override
         public void onChange(boolean selfChange) {
             ContentResolver resolver = mContext.getContentResolver();
             mHaloHide = Settings.Secure.getInt(resolver,
-                                Settings.Secure.HALO_HIDE, 0) == 1;
+                        Settings.Secure.HALO_HIDE, 0) == 1;
+            mHaloFloatNotifications = Settings.Secure.getInt(resolver,
+                        Settings.Secure.HALO_FLOAT_NOTIFICATIONS, 0) == 1;
             if (!selfChange) {
                 mEffect.wake();
                 mBar.restartHalo();
@@ -279,8 +282,8 @@ public class Halo extends FrameLayout implements Ticker.TickerCallback {
         // Init variables
         mHaloHide =
                 Settings.Secure.getInt(resolver, Settings.Secure.HALO_HIDE, 0) == 1;
+        mHaloFloatNotifications = Settings.Secure.getInt(resolver, Settings.Secure.HALO_FLOAT_NOTIFICATIONS, 0) == 1;
         mHaloSize = Settings.Secure.getFloat(resolver, Settings.Secure.HALO_SIZE, 1.0f);
-        mHaloColor = Settings.System.getInt(resolver, Settings.Secure.HALO_COLOR, 0xffbbbbbb);
         mHapticFeedback = Settings.System.getInt(resolver,
                     Settings.System.HAPTIC_FEEDBACK_ENABLED, 1) != 0;
         mIconSize = (int)(mContext.getResources()
@@ -290,7 +293,7 @@ public class Halo extends FrameLayout implements Ticker.TickerCallback {
 
         // Init colors
         mPaintHoloGrey.setAntiAlias(true);
-        mPaintHoloGrey.setColor(mHaloColor);
+        mPaintHoloGrey.setColor(0xffbbbbbb);
         mPaintWhite.setAntiAlias(true);
         mPaintWhite.setColor(0xfff0f0f0);
         mPaintHoloRed.setAntiAlias(true);
@@ -398,10 +401,25 @@ public class Halo extends FrameLayout implements Ticker.TickerCallback {
                                                 .getString(R.string.halo_tutorial3), 0, 3000);
                                         mHandler.postDelayed(new Runnable() {
                                             public void run() {
-                                                mState = STATE_IDLE;
-                                                mEffect.nap(0);
-                                                mEffect.setHaloOverlay
-                                                        (HaloProperties.Overlay.NONE, 0f);
+                                                mEffect.ticker(mContext.getResources()
+                                                        .getString(R.string.halo_tutorial4), 0, 3000);
+                                                mHandler.postDelayed(new Runnable() {
+                                                    public void run() {
+                                                        mEffect.ticker(mContext.getResources()
+                                                                .getString(R.string.halo_tutorial5), 0, 3000);
+                                                        mHandler.postDelayed(new Runnable() {
+                                                            public void run() {
+                                                                mEffect.ticker(mContext.getResources()
+                                                                        .getString(R.string.halo_tutorial6), 0, 3000);
+                                                                mHandler.postDelayed(new Runnable() {
+                                                                    public void run() {
+                                                                        mState = STATE_IDLE;
+                                                                        mEffect.nap(0);
+                                                                        mEffect.setHaloOverlay
+                                                                                (HaloProperties.Overlay.NONE, 0f);
+                                                                    }}, 6000);
+                                                            }}, 6000);
+                                                    }}, 6000);
                                             }}, 6000);
                                     }}, 6000);
                             }}, 6000);
@@ -490,7 +508,11 @@ public class Halo extends FrameLayout implements Ticker.TickerCallback {
         }
 
         try {
-            launchFloating();
+            if (mHaloFloatNotifications) {
+            	launchFloating();
+            } else {
+                launchNotification();
+            }
             ActivityManagerNative.getDefault().resumeAppSwitches();
         } catch (RemoteException e) {
             // ...
@@ -1466,6 +1488,25 @@ public class Halo extends FrameLayout implements Ticker.TickerCallback {
             overlay.addFlags(Intent.FLAG_FLOATING_WINDOW);
             try {
                 n.contentIntent.send(mContext, 0, overlay);
+            } catch (PendingIntent.CanceledException e) {
+                // Do nothing
+            }
+        }
+    }
+
+    private void launchNotification() {
+        StatusBarNotification notification;
+        for (int i = 0; i < mNotificationData.size(); i++) {
+            notification = mNotificationData.get(i).notification;
+            Notification n = notification.notification;
+            if (notification.notification.contentIntent == null) return;
+
+            Intent notif = new Intent();
+            notif.addFlags(
+                Intent.FLAG_ACTIVITY_NEW_TASK |
+                Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            try {
+                n.contentIntent.send(mContext, 0, notif);
             } catch (PendingIntent.CanceledException e) {
                 // Do nothing
             }

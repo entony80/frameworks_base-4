@@ -23,7 +23,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.IActivityManager;
 import android.app.KeyguardManager;
-import android.app.ChaosBusyDialog;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.IBluetoothManager;
@@ -153,7 +152,7 @@ public final class ShutdownThread extends Thread {
     private boolean isShutdownMusicPlaying = false;
 
     private static AlertDialog sConfirmDialog;
-    private ChaosBusyDialog mChaosBusyDialog;
+    private ProgressDialog mProgressDialog;
 
     private static AudioManager mAudioManager;
     private ShutdownThread() {
@@ -423,7 +422,7 @@ public final class ShutdownThread extends Thread {
         }
 
         // Throw up a system dialog to indicate the device is rebooting / shutting down.
-        ChaosBusyDialog pd = new ChaosBusyDialog(context);
+        ProgressDialog pd = new ProgressDialog(context);
 
         // Path 1: Reboot to recovery and install the update
         //   Condition: mRebootReason == REBOOT_RECOVERY and mRebootUpdate == True
@@ -450,14 +449,21 @@ public final class ShutdownThread extends Thread {
                 pd.setTitle(context.getText(com.android.internal.R.string.reboot_to_update_title));
                 pd.setMessage(context.getText(
                         com.android.internal.R.string.reboot_to_update_prepare));
+                pd.setMax(100);
+                pd.setProgressNumberFormat(null);
+                pd.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                pd.setProgress(0);
+                pd.setIndeterminate(false);
             } else if (mRebootWipe) {
                 // Factory reset path. Set the dialog message accordingly.
                 pd.setTitle(context.getText(com.android.internal.R.string.reboot_to_reset_title));
                 pd.setMessage(context.getText(
                         com.android.internal.R.string.reboot_to_reset_message));
+                pd.setIndeterminate(true);
             } else {
                 pd.setTitle(context.getText(com.android.internal.R.string.reboot_title));
                 pd.setMessage(context.getText(com.android.internal.R.string.reboot_progress));
+                pd.setIndeterminate(true);
             }
         } else {
             if (mReboot) {
@@ -467,6 +473,7 @@ public final class ShutdownThread extends Thread {
                 pd.setTitle(context.getText(com.android.internal.R.string.power_off));
                 pd.setMessage(context.getText(com.android.internal.R.string.shutdown_progress));
             }
+            pd.setIndeterminate(true);
         }
 
         //acquire audio focus to make the other apps to stop playing muisc
@@ -483,7 +490,7 @@ public final class ShutdownThread extends Thread {
             pd.show();
         }
 
-        sInstance.mChaosBusyDialog = pd;
+        sInstance.mProgressDialog = pd;
         sInstance.mContext = context;
         sInstance.mPowerManager = (PowerManager)context.getSystemService(Context.POWER_SERVICE);
 
@@ -713,9 +720,12 @@ public final class ShutdownThread extends Thread {
         mHandler.post(new Runnable() {
             @Override
             public void run() {
+                if (mProgressDialog != null) {
+                    mProgressDialog.setProgress(progress);
                     if (message != null) {
-                        mChaosBusyDialog.setMessage(message);
+                        mProgressDialog.setMessage(message);
                     }
+                }
             }
         });
     }

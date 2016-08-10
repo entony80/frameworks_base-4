@@ -19,44 +19,24 @@ package com.android.systemui.recents;
 import android.app.Activity;
 import android.app.ActivityOptions;
 import android.app.SearchManager;
-import android.app.WallpaperManager;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProviderInfo;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.ContentResolver;
-import android.database.ContentObserver;
-import android.graphics.*;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
 import android.content.Intent;
-import android.util.DisplayMetrics;
-import android.util.Log;
-import android.util.AttributeSet;
-import android.widget.FrameLayout;
 import android.content.IntentFilter;
 import android.content.res.Resources;
 import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
-import com.android.systemui.statusbar.BlurUtils;
-import com.android.systemui.statusbar.DisplayUtils;
-import com.android.systemui.statusbar.phone.NotificationPanelView;
-import com.android.systemui.cm.UserContentObserver;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.os.UserHandle;
 import android.provider.Settings;
-import android.view.Gravity;
-import android.os.Handler;
-import android.net.Uri;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewStub;
-import java.lang.reflect.Field;
 import android.widget.ImageView;
 import android.widget.Toast;
-import java.util.HashMap;
 
 import com.android.internal.logging.MetricsLogger;
 import com.android.systemui.Prefs;
@@ -75,7 +55,6 @@ import com.android.systemui.recents.views.RecentsView;
 import com.android.systemui.recents.views.SystemBarScrimViews;
 import com.android.systemui.recents.views.ViewAnimation;
 import cyanogenmod.providers.CMSettings;
-import android.provider.Settings;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -87,10 +66,6 @@ public class RecentsActivity extends Activity implements RecentsView.RecentsView
         RecentsAppWidgetHost.RecentsAppWidgetHostCallbacks,
         DebugOverlayView.DebugOverlayViewCallbacks {
 
-<<<<<<< HEAD
-	private static final HashMap<String, Field> fieldCache = new HashMap<String, Field>();
-=======
->>>>>>> 172c2aa... [SQUASHED] Blur: Major update (1/2)
     RecentsConfiguration mConfig;
     long mLastTabKeyEventTime;
 
@@ -101,8 +76,6 @@ public class RecentsActivity extends Activity implements RecentsView.RecentsView
     ViewStub mDebugOverlayStub;
     View mEmptyView;
     DebugOverlayView mDebugOverlay;
-	
-	public static boolean mBlurredRecentAppsEnabled;
 
     // Resize task debug
     RecentsResizeTaskDialog mResizeTaskDebugDialog;
@@ -117,183 +90,7 @@ public class RecentsActivity extends Activity implements RecentsView.RecentsView
 
     // Runnable to be executed after we paused ourselves
     Runnable mAfterPauseRunnable;
-<<<<<<< HEAD
-	
-	public static void startBlurTask() {
 
-        if (mRecentsActivityRootView != null)
-            mRecentsActivityRootView.setBackground(null);
-
-        if (!mBlurredRecentAppsEnabled)
-            return;
-
-        BlurTask.setBlurTaskCallback(new BlurUtils.BlurTaskCallback() {
-
-            @Override
-            public void blurTaskDone(final Bitmap blurredBitmap) {
-
-                if (blurredBitmap != null) {
-                    if (mRecentsActivityRootView != null) {
-                        mRecentsActivityRootView.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                BitmapDrawable blurredDrawable = new BitmapDrawable(blurredBitmap);
-                                
-                                blurredDrawable.setColorFilter(mColorFilter);
-
-                                mRecentsActivityRootView.setBackground(blurredDrawable);
-                            }
-                        });
-                    }
-                }
-            }
-
-            @Override
-            public void dominantColor(int color) {
-                double lightness = DisplayUtils.getColorLightness(color);
-
-                if (lightness >= 0.0 && color <= 1.0) {
-                    if (lightness <= 0.33) {
-                        mColorFilter = new PorterDuffColorFilter(mBlurLightColorFilter, PorterDuff.Mode.MULTIPLY);
-
-                    } else if (lightness >= 0.34 && lightness <= 0.66) {
-                        mColorFilter = new PorterDuffColorFilter(mBlurMixedColorFilter, PorterDuff.Mode.MULTIPLY);
-
-                    } else if (lightness >= 0.67 && lightness <= 1.0) {
-                        mColorFilter = new PorterDuffColorFilter(mBlurDarkColorFilter, PorterDuff.Mode.MULTIPLY);
-
-                    }
-
-                } else {
-                    mColorFilter = new PorterDuffColorFilter(mBlurMixedColorFilter, PorterDuff.Mode.MULTIPLY);
-                }
-            }
-        });
-
-        BlurTask.setBlurEngine(BlurUtils.BlurEngine.RenderScriptBlur);
-
-        new BlurTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-
-    }
-
-    public static void onConfigurationChanged() {
-        RecentsActivity.startBlurTask();
-    }
-
-
-
-        public static class BlurTask extends AsyncTask<Void, Void, Bitmap> {
-
-            private static int[] mScreenDimens;
-            private static Bitmap mScreenBitmap;
-            private static BlurUtils.BlurEngine mBlurEngine;
-            private static BlurUtils.BlurTaskCallback mCallback;
-
-            public static void setBlurEngine(BlurUtils.BlurEngine blurEngine) {
-                mBlurEngine = blurEngine;
-            }
-
-            private Bitmap drawableToBitmap(Drawable drawable) {
-                Bitmap bitmap = null;
-                if (drawable instanceof BitmapDrawable) {
-                    BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
-                    if(bitmapDrawable.getBitmap() != null) {
-                        return bitmapDrawable.getBitmap();
-                    }
-                }
-                if(drawable.getIntrinsicWidth() <= 0 || drawable.getIntrinsicHeight() <= 0) {
-                    bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888); // Single color bitmap will be created of 1x1 pixel
-                } else {
-                    bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-                }
-                Canvas canvas = new Canvas(bitmap);
-                drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-                drawable.draw(canvas);
-                return bitmap;
-            }
-
-            public static void setBlurTaskCallback(BlurUtils.BlurTaskCallback callBack) {
-                mCallback = callBack;
-            }
-
-            public static int[] getRealScreenDimensions() {
-                return mScreenDimens;
-            }
-
-            public static Bitmap getLastBlurredBitmap() {
-                return mScreenBitmap;
-            }
-
-            @Override
-            protected void onPreExecute() {
-
-                mScreenDimens = DisplayUtils.getRealScreenDimensions(mContext);
-
-                WallpaperManager wallpaperManager = WallpaperManager.getInstance(mContext);
-                DisplayMetrics dm = mContext.getResources().getDisplayMetrics();
-                float screenh = dm.heightPixels;
-                float screenw = dm.widthPixels;
-                float bmheight = screenh;
-                 float bmwidth = screenw;
-                float bmratio = 1;
-                Bitmap bback = drawableToBitmap(wallpaperManager.getDrawable());
-                float bbh = bback.getHeight();
-                float bbw = bback.getWidth();
-                if (bmheight > bbh) {
-                    bmratio = bbh/bmheight;
-                    bmheight = (bmratio*screenh);
-                }
-                bmwidth = (bmwidth*bmratio);
-                if (bmwidth > bbw) {
-                    bmratio = bbw/screenw;
-                    bmwidth = (bmratio*screenw);
-                    bmheight = (bmratio*screenh);
-                }
-                Bitmap mScreenBitmap2 = Bitmap.createBitmap(bback, 0, 0, (int)bmwidth, (int)bmheight);
-                mScreenBitmap = Bitmap.createScaledBitmap(
-                        mScreenBitmap2, (int)(bmwidth / 20), (int)(bmheight / 20), false);
-            }
-
-            @Override
-            protected Bitmap doInBackground(Void... arg0) {
-
-                try {
-                    if (mScreenBitmap == null)
-                        return null;
-
-                    mCallback.dominantColor(DisplayUtils.getDominantColorByPixelsSampling(mScreenBitmap, 10, 10));
-
-                    if (mBlurEngine == BlurUtils.BlurEngine.RenderScriptBlur) {
-                        mScreenBitmap = mBlurUtils.renderScriptBlur(mScreenBitmap, mBlurRadius);
-
-                    } else if (mBlurEngine == BlurUtils.BlurEngine.StackBlur) {
-                        mScreenBitmap = mBlurUtils.stackBlur(mScreenBitmap, mBlurRadius);
-
-                    } else if (mBlurEngine == BlurUtils.BlurEngine.FastBlur) {
-                        mBlurUtils.fastBlur(mScreenBitmap, mBlurRadius);
-                    }
-                    return mScreenBitmap;
-
-                } catch (OutOfMemoryError e) {
-                    return null;
-                }
-            }
-
-            @Override
-            protected void onPostExecute(Bitmap bitmap) {
-
-                if (bitmap != null) {
-                    mCallback.blurTaskDone(bitmap);
-
-                } else {
-                    mCallback.blurTaskDone(null);
-            }
-        }
-    }
-
-=======
-    static RecentsTaskLoadPlan plan;
->>>>>>> 172c2aa... [SQUASHED] Blur: Major update (1/2)
     private ReferenceCountedTrigger mExitTrigger;
 
     /**
