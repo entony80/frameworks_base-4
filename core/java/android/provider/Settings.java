@@ -4014,13 +4014,17 @@ public final class Settings {
         public static final String KEYGUARD_TOGGLE_TORCH = "keyguard_toggle_torch";
 
         /**
-         * whether to enable /disable showing charging current on lockscreen
+         * The alpha value of the On-The-Go overlay.
+         *
          * @hide
          */
-        public static final String LOCK_SCREEN_SHOW_CURRENT = "lock_screen_show_current";
+        public static final String ON_THE_GO_ALPHA = "on_the_go_alpha";
 
         /**
-         * Allows setting the radius for lockscreen blur
+         * The camera instance to use.
+         * 0 = Rear Camera
+         * 1 = Front Camera
+         *
          * @hide
          */
         public static final String LOCKSCREEN_BLUR_RADIUS = "lockscreen_blur_radius";
