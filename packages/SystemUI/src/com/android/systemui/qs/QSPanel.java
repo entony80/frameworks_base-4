@@ -115,10 +115,6 @@ public class QSPanel extends ViewGroup {
         mClipper = new QSDetailClipper(mDetail);
         updateResources();
 
-        boolean brightnessIconEnabled = Settings.System.getIntForUser(
-            mContext.getContentResolver(), Settings.System.BRIGHTNESS_ICON,
-                1, UserHandle.USER_CURRENT) == 1;
-
         mBrightnessController = new BrightnessController(getContext(),
                 (ImageView) findViewById(R.id.brightness_icon),
                 (ToggleSlider) findViewById(R.id.brightness_slider));
@@ -140,23 +136,15 @@ public class QSPanel extends ViewGroup {
         boolean brightnessSliderEnabled = CMSettings.System.getIntForUser(
             mContext.getContentResolver(), CMSettings.System.QS_SHOW_BRIGHTNESS_SLIDER,
                 1, UserHandle.USER_CURRENT) == 1;
-        boolean brightnessIconEnabled = Settings.System.getIntForUser(
-            mContext.getContentResolver(), Settings.System.BRIGHTNESS_ICON,
-                1, UserHandle.USER_CURRENT) == 1;
         ToggleSlider brightnessSlider = (ToggleSlider) findViewById(R.id.brightness_slider);
         ImageView brightnessIcon = (ImageView) findViewById(R.id.brightness_icon);
         if (brightnessSliderEnabled) {
             mBrightnessView.setVisibility(VISIBLE);
             brightnessSlider.setVisibility(VISIBLE);
-            if (brightnessIconEnabled) {
-                brightnessIcon.setVisibility(VISIBLE);
-            } else {
-                brightnessIcon.setVisibility(GONE);
-            }
         } else {
             mBrightnessView.setVisibility(GONE);
             brightnessSlider.setVisibility(GONE);
-            brightnessIcon.setVisibility(GONE);
+            brightnessIcon.setVisibility(View.GONE);
         }
         updateResources();
         return brightnessSliderEnabled;

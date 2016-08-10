@@ -300,24 +300,8 @@ public class KeyguardStatusView extends GridLayout implements
 
         mShowWeather = Settings.System.getInt(resolver,
                 Settings.System.LOCK_SCREEN_SHOW_WEATHER, 0) == 1;
-        boolean showAlarm = Settings.System.getIntForUser(resolver,
-                Settings.System.HIDE_LOCKSCREEN_ALARM, 1, UserHandle.USER_CURRENT) == 1;
-        boolean showClock = Settings.System.getIntForUser(resolver,
-                Settings.System.HIDE_LOCKSCREEN_CLOCK, 1, UserHandle.USER_CURRENT) == 1;
-        boolean showDate = Settings.System.getIntForUser(resolver,
-                Settings.System.HIDE_LOCKSCREEN_DATE, 1, UserHandle.USER_CURRENT) == 1;
         boolean showLocation = Settings.System.getInt(resolver,
                     Settings.System.LOCK_SCREEN_SHOW_WEATHER_LOCATION, 1) == 1;
-        int clockColor = Settings.System.getInt(resolver,
-                Settings.System.LOCKSCREEN_CLOCK_COLOR, 0xFFFFFFFF);
-        int clockDateColor = Settings.System.getInt(resolver,
-                Settings.System.LOCKSCREEN_CLOCK_DATE_COLOR, 0xFFFFFFFF);
-        int ownerInfoColor = Settings.System.getInt(resolver,
-                Settings.System.LOCKSCREEN_OWNER_INFO_COLOR, 0xFFFFFFFF);
-        int alarmColor = Settings.System.getInt(resolver,
-                Settings.System.LOCKSCREEN_ALARM_COLOR, 0xFFFFFFFF);
-        int lockClockFont = Settings.System.getIntForUser(resolver,
-                Settings.System.LOCK_CLOCK_FONTS, 4, UserHandle.USER_CURRENT);
         int iconNameValue = Settings.System.getInt(resolver,
                 Settings.System.LOCK_SCREEN_WEATHER_CONDITION_ICON, 0);
         boolean colorizeAllIcons = Settings.System.getInt(resolver,
@@ -373,98 +357,6 @@ public class KeyguardStatusView extends GridLayout implements
         mAlarmStatusView = (TextView) findViewById(R.id.alarm_status);
         mAlarmStatusView.setVisibility(showAlarm && nextAlarm != null ? View.VISIBLE : View.GONE);
 
-        if (lockClockFont == 0) {
-            mClockView.setTypeface(Typeface.create("sans-serif", Typeface.NORMAL));
-        }
-        if (lockClockFont == 1) {
-            mClockView.setTypeface(Typeface.create("sans-serif", Typeface.BOLD));
-        }
-        if (lockClockFont == 2) {
-            mClockView.setTypeface(Typeface.create("sans-serif", Typeface.ITALIC));
-        }
-        if (lockClockFont == 3) {
-            mClockView.setTypeface(Typeface.create("sans-serif", Typeface.BOLD_ITALIC));
-        }
-        if (lockClockFont == 4) {
-            mClockView.setTypeface(Typeface.create("sans-serif-light", Typeface.NORMAL));
-        }
-        if (lockClockFont == 5) {
-            mClockView.setTypeface(Typeface.create("sans-serif-light", Typeface.ITALIC));
-        }
-        if (lockClockFont == 6) {
-            mClockView.setTypeface(Typeface.create("sans-serif-thin", Typeface.NORMAL));
-        }
-        if (lockClockFont == 7) {
-            mClockView.setTypeface(Typeface.create("sans-serif-thin", Typeface.ITALIC));
-        }
-        if (lockClockFont == 8) {
-            mClockView.setTypeface(Typeface.create("sans-serif-condensed", Typeface.NORMAL));
-        }
-        if (lockClockFont == 9) {
-            mClockView.setTypeface(Typeface.create("sans-serif-condensed", Typeface.BOLD));
-        }
-        if (lockClockFont == 10) {
-            mClockView.setTypeface(Typeface.create("sans-serif-condensed", Typeface.ITALIC));
-        }
-        if (lockClockFont == 11) {
-            mClockView.setTypeface(Typeface.create("sans-serif-condensed", Typeface.BOLD_ITALIC));
-        }
-        if (lockClockFont == 12) {
-            mClockView.setTypeface(Typeface.create("sans-serif-medium", Typeface.NORMAL));
-        }
-        if (lockClockFont == 13) {
-            mClockView.setTypeface(Typeface.create("sans-serif-medium", Typeface.ITALIC));
-        }
-        if (lockClockFont == 14) {
-            mClockView.setTypeface(Typeface.create("sans-serif-black", Typeface.NORMAL));
-        }
-        if (lockClockFont == 15) {
-            mClockView.setTypeface(Typeface.create("sans-serif-black", Typeface.ITALIC));
-        }
-        if (lockClockFont == 16) {
-            mClockView.setTypeface(Typeface.create("sans-serif-condensed-light", Typeface.NORMAL));
-        }
-        if (lockClockFont == 17) {
-            mClockView.setTypeface(Typeface.create("sans-serif-condensed-light", Typeface.ITALIC));
-        }
-        if (lockClockFont == 18) {
-            mClockView.setTypeface(Typeface.create("cursive", Typeface.NORMAL));
-        }
-        if (lockClockFont == 19) {
-            mClockView.setTypeface(Typeface.create("cursive", Typeface.BOLD));
-        }
-        if (lockClockFont == 20) {
-            mClockView.setTypeface(Typeface.create("casual", Typeface.NORMAL));
-        }
-        if (lockClockFont == 21) {
-            mClockView.setTypeface(Typeface.create("serif", Typeface.NORMAL));
-        }
-        if (lockClockFont == 22) {
-            mClockView.setTypeface(Typeface.create("serif", Typeface.ITALIC));
-        }
-        if (lockClockFont == 23) {
-            mClockView.setTypeface(Typeface.create("serif", Typeface.BOLD));
-        }
-        if (lockClockFont == 24) {
-            mClockView.setTypeface(Typeface.create("serif", Typeface.BOLD_ITALIC));
-        }
-
-        if (mClockView != null) {
-            mClockView.setTextColor(clockColor);
-        }
-
-        if (mDateView != null) {
-            mDateView.setTextColor(clockDateColor);
-        }
-
-        if (mOwnerInfo != null) {
-            mOwnerInfo.setTextColor(ownerInfoColor);
-        }
-
-        if (mAlarmStatusView != null) {
-            mAlarmStatusView.setTextColor(alarmColor);
-        }
-
         if (mIconNameValue != iconNameValue) {
             mIconNameValue = iconNameValue;
             mWeatherController.updateWeather();
@@ -500,9 +392,7 @@ public class KeyguardStatusView extends GridLayout implements
             final Locale locale = Locale.getDefault();
             final Resources res = context.getResources();
             final ContentResolver resolver = context.getContentResolver();
-            final boolean showAlarm = Settings.System.getIntForUser(resolver,
-                    Settings.System.HIDE_LOCKSCREEN_ALARM, 1, UserHandle.USER_CURRENT) == 1;
-            final String dateViewSkel = res.getString(hasAlarm && showAlarm
+            final String dateViewSkel = res.getString(hasAlarm
                     ? R.string.abbrev_wday_month_day_no_year_alarm
                     : R.string.abbrev_wday_month_day_no_year);
             final String clockView12Skel = res.getString(R.string.clock_12hr_format);

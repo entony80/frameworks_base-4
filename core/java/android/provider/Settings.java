@@ -3403,18 +3403,6 @@ public final class Settings {
         public static final String UNLOCK_SOUND = Global.UNLOCK_SOUND;
 
         /**
-         * Give Missed call notifications a breathing effect
-         * @hide
-         */
-        public static final String KEY_MISSED_CALL_BREATH = "missed_call_breath";
-
-        /**
-         * Give Voicemail notifications a breathing effect
-         * @hide
-         */
-        public static final String KEY_VOICEMAIL_BREATH = "voicemail_breath";
-
-        /**
          * Receive incoming SIP calls?
          * 0 = no
          * 1 = yes
@@ -3681,18 +3669,6 @@ public final class Settings {
         public static final String ANSWER_VOLUME_BUTTON_BEHAVIOR_ANSWER = "call_volume_answer";
 
         /**
-         * Whether to display clock while recents are in full screen
-         * @hide
-         */
-        public static final String RECENTS_FULL_SCREEN_CLOCK = "recents_full_screen_clock";
-
-        /**
-         * Whether to display clock while recents are in full screen
-         * @hide
-         */
-        public static final String RECENTS_FULL_SCREEN_DATE = "recents_full_screen_date";
-
-        /**
          * Whether the notification light will be allowed when in zen mode during downtime
          * @hide
          */
@@ -3942,52 +3918,6 @@ public final class Settings {
         public static final String LOCK_SCREEN_WEATHER_NUMBER_OF_NOTIFICATIONS = "lock_screen_weather_number_of_notifications";
 
         /**
-         * Change the color of the lockscreen owner's info text
-         *
-         * @hide
-         */
-        public static final String LOCKSCREEN_OWNER_INFO_COLOR = "lockscreen_owner_info_color";
-
-        /**
-         * Change the color of the lockscreen alarm text
-         *
-         * @hide
-         */
-        public static final String LOCKSCREEN_ALARM_COLOR = "lockscreen_alarm_color";
-
-        /**
-         * Change the color of the lockscreen clock
-         *
-         * @hide
-         */
-        public static final String LOCKSCREEN_CLOCK_COLOR = "lockscreen_clock_color";
-
-        /**
-         * Change the color of the lockscreen date underneath the clock
-         *
-         * @hide
-         */
-        public static final String LOCKSCREEN_CLOCK_DATE_COLOR = "lockscreen_clock_date_color";
-
-        /**
-         * Hide lockscreen date
-         * @hide
-         */
-        public static final String HIDE_LOCKSCREEN_DATE = "hide_lockscreen_date";
-
-        /**
-         * Hide lockscreen clock
-         * @hide
-         */
-        public static final String HIDE_LOCKSCREEN_CLOCK = "hide_lockscreen_clock";
-
-        /**
-         * Hide lockscreen alarm
-         * @hide
-         */
-        public static final String HIDE_LOCKSCREEN_ALARM = "hide_lockscreen_alarm";
-
-        /**
          * Number of notifications visible on the lockscreen including the overflow container
          * @hide
          */
@@ -4014,13 +3944,17 @@ public final class Settings {
         public static final String KEYGUARD_TOGGLE_TORCH = "keyguard_toggle_torch";
 
         /**
-         * whether to enable /disable showing charging current on lockscreen
+         * The alpha value of the On-The-Go overlay.
+         *
          * @hide
          */
-        public static final String LOCK_SCREEN_SHOW_CURRENT = "lock_screen_show_current";
+        public static final String ON_THE_GO_ALPHA = "on_the_go_alpha";
 
         /**
-         * Allows setting the radius for lockscreen blur
+         * The camera instance to use.
+         * 0 = Rear Camera
+         * 1 = Front Camera
+         *
          * @hide
          */
         public static final String LOCKSCREEN_BLUR_RADIUS = "lockscreen_blur_radius";
@@ -4694,12 +4628,6 @@ public final class Settings {
          */
         public static final String SCREENSHOT_SOUND = "screenshot_sound";
 
-        /**
-         * Whether to show Brightness Icon On Brightness Slider
-         * @hide
-         */
-        public static final String BRIGHTNESS_ICON = "brightness_icon";
-
 	   /**
 	    * Enable blocking wakelock
 	    * @hide
@@ -4745,24 +4673,6 @@ public final class Settings {
         public static final String QS_TRANSPARENT_HEADER = "qs_transparent_header";
 
         /**
-         * Transparent volume dialog
-         * @hide
-         */
-        public static final String TRANSPARENT_VOLUME_DIALOG = "transparent_volume_dialog";
-
-        /**
-         * Transparent power menu and dialogs
-         * @hide
-         */
-        public static final String TRANSPARENT_POWER_MENU = "transparent_power_menu";
-
-        /**
-         * Dim amount around power/reboot menu dialogs
-         * @hide
-         */
-        public static final String TRANSPARENT_POWER_DIALOG_DIM = "transparent_power_dialog_dim";
-
-        /**
          * Whether to display dashboard dividers
          * @hide
          */
@@ -4787,12 +4697,6 @@ public final class Settings {
         public static final String STATUS_BAR_HEADER_FONT_STYLE = "status_bar_header_font_style";
 
         /**
-         * Add rotation to navbar buttons on navbar recreate (rotate screen, etc)
-         * @hide
-         */
-        public static final String NAV_BUTTONS_ROTATION = "nav_buttons_rotation";
-
-        /**
          * Quick Settings Smart Pulldown
          * @hide
          */
@@ -4808,18 +4712,6 @@ public final class Settings {
          * Define when Nfc polling is activated.
          */
         public static final String NFC_POLLING_MODE = "nfc_polling";
-
-        /**
-         * Dashboard title text size
-         * @hide
-         */
-        public static final String SETTINGS_TITLE_TEXT_SIZE = "settings_title_text_size";
-
-        /**
-         * Dashboard category text size
-         * @hide
-         */
-        public static final String SETTINGS_CATEGORY_TEXT_SIZE = "settings_category_text_size";
 
         /**
          * Nfc sound mode.
@@ -4844,54 +4736,6 @@ public final class Settings {
          * @hide
          */
         public static final String DOZE_WAKEUP_DOUBLETAP = "doze_wakeup_doubletap";
-
-        /**
-         *  List of apps hidden from recents
-         * @hide
-         */
-        public static final String HIDE_FROM_RECENTS_LIST = "hide_from_recents_list";
-
-        /**
-         * Settings Dash Font Style
-         * @hide
-         */
-        public static final String DASHBOARD_FONT_STYLE = "dashboard_font_style";
-
-        /**
-         * Dashboard main color switch
-         * @hide
-         */
-        public static final String DASHBOARD_CUSTOMIZATIONS = "dashboard_customizations";
-
-        /**
-         * Dashboard color
-         * @hide
-         */
-        public static final String SETTINGS_BG_COLOR = "settings_bg_color";
-
-        /**
-         * Dashboard title text color
-         * @hide
-         */
-        public static final String SETTINGS_TITLE_TEXT_COLOR = "settings_title_text_color";
-
-        /**
-         * Toolbar title text color
-         * @hide
-         */
-        public static final String SETTINGS_TOOLBAR_TEXT_COLOR = "settings_toolbar_text_color";
-
-        /**
-         * Dashboard icon color
-         * @hide
-         */
-        public static final String SETTINGS_ICON_COLOR = "settings_icon_color";
-
-        /**
-         * Dashboard category text color
-         * @hide
-         */
-        public static final String SETTINGS_CATEGORY_TEXT_COLOR = "settings_category_text_color";
 
         /**
          * Whether to use gesture anywhere feature.
