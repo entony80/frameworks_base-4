@@ -4640,12 +4640,6 @@ public final class Settings {
          */
         public static final String SCREENSHOT_SOUND = "screenshot_sound";
 
-        /**
-         * Whether to show Brightness Icon On Brightness Slider
-         * @hide
-         */
-        public static final String BRIGHTNESS_ICON = "brightness_icon";
-
 	   /**
 	    * Enable blocking wakelock
 	    * @hide
