@@ -4703,18 +4703,6 @@ public final class Settings {
         public static final String QS_TRANSPARENT_HEADER = "qs_transparent_header";
 
         /**
-         * Transparent volume dialog
-         * @hide
-         */
-        public static final String TRANSPARENT_VOLUME_DIALOG = "transparent_volume_dialog";
-
-        /**
-         * Transparent power menu and dialogs
-         * @hide
-         */
-        public static final String TRANSPARENT_POWER_MENU = "transparent_power_menu";
-
-        /**
          * Whether to display dashboard dividers
          * @hide
          */
