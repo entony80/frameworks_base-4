@@ -4758,12 +4758,6 @@ public final class Settings {
         public static final String STATUS_BAR_HEADER_FONT_STYLE = "status_bar_header_font_style";
 
         /**
-         * Add rotation to navbar buttons on navbar recreate (rotate screen, etc)
-         * @hide
-         */
-        public static final String NAV_BUTTONS_ROTATION = "nav_buttons_rotation";
-
-        /**
          * Quick Settings Smart Pulldown
          * @hide
          */
