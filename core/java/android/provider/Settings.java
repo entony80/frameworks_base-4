@@ -4846,30 +4846,6 @@ public final class Settings {
         public static final String DASHBOARD_FONT_STYLE = "dashboard_font_style";
 
         /**
-         * Dashboard color
-         * @hide
-         */
-        public static final String SETTINGS_BG_COLOR = "settings_bg_color";
-
-        /**
-         * Dashboard title text color
-         * @hide
-         */
-        public static final String SETTINGS_TITLE_TEXT_COLOR = "settings_title_text_color";
-
-        /**
-         * Dashboard icon color
-         * @hide
-         */
-        public static final String SETTINGS_ICON_COLOR = "settings_icon_color";
-
-        /**
-         * Dashboard category text color
-         * @hide
-         */
-        public static final String SETTINGS_CATEGORY_TEXT_COLOR = "settings_category_text_color";
-
-        /**
          * Whether to use gesture anywhere feature.
          * @hide
          */
